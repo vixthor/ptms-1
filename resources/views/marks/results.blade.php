@@ -83,7 +83,7 @@
     function getSectionsAndCourses(obj) {
         var class_id = obj.options[obj.selectedIndex].value;
 
-        var url = "{{route('get.sections.courses.by.classId')}}?class_id=" + class_id 
+        var url = "{{ route('get.sections.courses.by.classId', 'classId') }}".replace('classId', class_id);
 
         fetch(url)
         .then((resp) => resp.json())

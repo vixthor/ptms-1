@@ -57,7 +57,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($exams as $exam)
-                                        @if (Auth::user()->role == "admin")
+                                        @if (Auth::user()->canManageAcademics())
                                         <tr>
                                             <td>{{$exam->exam_name}}</td>
                                             <td>{{$exam->course->course_name}}</td>
@@ -68,6 +68,7 @@
                                                 <div class="btn-group" role="group">
                                                     <a href="{{route('exam.rule.create', ['exam_id' => $exam->id])}}" role="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-plus"></i> Add Rule</a>
                                                     <a href="{{route('exam.rule.list', ['exam_id' => $exam->id])}}" role="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i> View Rule</a>
+                                                    <a href="{{route('cbt.questions.index', ['exam' => $exam->id])}}" role="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-ui-checks"></i> CBT Questions</a>
                                                     {{-- <a href="{{route('exam.edit', ['exam_id' => $exam->id])}}" role="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-pen"></i> Edit</a> --}}
                                                     {{-- <a href="{{route('exam.delete')}}" role="button" class="btn btn-sm btn-primary" onclick="event.preventDefault();
                                                         document.getElementById('exam-delete-form-{{$exam->id}}').submit();"><i class="bi bi-trash2"></i> Delete</a>
@@ -93,6 +94,7 @@
                                                         <div class="btn-group" role="group">
                                                             <a href="{{route('exam.rule.create', ['exam_id' => $exam->id])}}" role="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-plus"></i> Add Rule</a>
                                                             <a href="{{route('exam.rule.list', ['exam_id' => $exam->id])}}" role="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i> View Rule</a>
+                                                            <a href="{{route('cbt.questions.index', ['exam' => $exam->id])}}" role="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-ui-checks"></i> CBT Questions</a>
                                                         </div>
                                                     </td>
                                                 </tr>

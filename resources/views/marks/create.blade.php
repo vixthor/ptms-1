@@ -12,7 +12,7 @@
                     </h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
                             <li class="breadcrumb-item"><a href="{{url()->previous()}}">My courses</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Give Marks</li>
                         </ol>
@@ -51,7 +51,7 @@
                                             <th scope="col">Student Name</th>
                                             @isset($exams)
                                                 @foreach ($exams as $exam)
-                                                <th scope="col"><a href="{{route('exam.rule.show', ['exam_id' => $exam->id])}}" data-bs-toggle="tooltip" data-bs-placement="top" title="View {{$exam->exam_name}} exam rules">{{$exam->exam_name}}</a></th>
+                                                <th scope="col"><a href="{{route('exam.rule.list', ['exam_id' => $exam->id])}}" data-bs-toggle="tooltip" data-bs-placement="top" title="View {{$exam->exam_name}} exam rules">{{$exam->exam_name}}</a></th>
                                                 @endforeach
                                             @endisset
                                             </tr>

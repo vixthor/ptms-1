@@ -2,18 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Mark;
-use App\Models\StudentParentInfo;
-use App\Models\StudentAcademicInfo;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasRoles, HasFactory, Notifiable;
+    use HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -80,5 +76,73 @@ class User extends Authenticatable
     public function marks()
     {
         return $this->hasMany(Mark::class, 'student_id', 'id');
+    }
+
+    /**
+     * Staff designations, distinct from the base 'admin' role. Each is its
+     * own `role` value, stored the same way 'teacher'/'student' are.
+     */
+    public const ROLE_PROPRIETOR = 'proprietor';
+
+    public const ROLE_HEADTEACHER = 'headteacher';
+
+    public const ROLE_SECRETARY = 'secretary';
+
+    public const STAFF_DESIGNATIONS = [
+        self::ROLE_HEADTEACHER,
+        self::ROLE_PROPRIETOR,
+        self::ROLE_SECRETARY,
+    ];
+
+    /**
+     * Proprietor (owner) has full parity with Admin.
+     */
+    public function isAdminLevel(): bool
+    {
+        return in_array($this->role, ['admin', self::ROLE_PROPRIETOR]);
+    }
+
+    /**
+     * Academic administration: classes, sections, courses, exams, grading,
+     * promotions, notices/events/syllabus/routines, academic settings.
+     */
+    public function canManageAcademics(): bool
+    {
+        return $this->isAdminLevel() || $this->role === self::ROLE_HEADTEACHER;
+    }
+
+    /**
+     * Clerical/administrative duties: student & teacher records, notices,
+     * attendance, fee collection.
+     */
+    public function canManageClerical(): bool
+    {
+        return $this->isAdminLevel() || $this->role === self::ROLE_SECRETARY;
+    }
+
+    public function canManageStudentsAndTeachers(): bool
+    {
+        return $this->canManageAcademics() || $this->canManageClerical();
+    }
+
+    public function canManagePayments(): bool
+    {
+        return $this->isAdminLevel() || $this->role === self::ROLE_SECRETARY;
+    }
+
+    /**
+     * Staff (HR) management stays exclusive to ownership level.
+     */
+    public function canManageStaff(): bool
+    {
+        return $this->isAdminLevel();
+    }
+
+    /**
+     * Public website content management stays exclusive to ownership level.
+     */
+    public function canManageWebsite(): bool
+    {
+        return $this->isAdminLevel();
     }
 }

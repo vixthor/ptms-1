@@ -5,67 +5,65 @@
     <div class="row justify-content-start">
         @include('layouts.left-menu')
         <div class="col-xs-11 col-sm-11 col-md-11 col-lg-10 col-xl-10 col-xxl-10">
-            <div class="row pt-3">
+            <div class="row pt-4">
                 <div class="col ps-4">
-                    <!-- <h1 class="display-6 mb-3"><i class="ms-auto bi bi-grid"></i> {{ __('Dashboard') }}</h1> -->
-                    <div class="row dashboard">
-                        @if(Auth::user()->role=="admin")
-                        <div class="col">
-                            <div class="card rounded-pill">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div class="ms-2 me-auto">
-                                            <div class="fw-bold"><i class="bi bi-person-lines-fill me-3"></i> Total Students</div>
-                                        </div>
-                                        <span class="badge bg-dark rounded-pill">{{$studentCount}}</span>
+                    <div class="mb-3">
+                        <h4 class="mb-1">Dashboard</h4>
+                        <p class="text-secondary mb-0" style="font-size:.875rem;">Here's what's happening across the school today.</p>
+                    </div>
+
+                    @if(Auth::user()->role=="admin")
+                    <div class="row g-3 dashboard">
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body d-flex align-items-center gap-3">
+                                    <span class="d-inline-flex align-items-center justify-content-center rounded-3" style="width:46px;height:46px;background:var(--brand-50);color:var(--brand-600);font-size:1.25rem;">
+                                        <i class="bi bi-person-lines-fill"></i>
+                                    </span>
+                                    <div>
+                                        <div class="text-secondary" style="font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;">Total Students</div>
+                                        <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--ink-900);">{{$studentCount}}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card rounded-pill">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div class="ms-2 me-auto">
-                                            <div class="fw-bold"><i class="bi bi-person-lines-fill me-3"></i> Total Teachers</div>
-                                        </div>
-                                        <span class="badge bg-dark rounded-pill">{{$teacherCount}}</span>
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body d-flex align-items-center gap-3">
+                                    <span class="d-inline-flex align-items-center justify-content-center rounded-3" style="width:46px;height:46px;background:var(--accent-100);color:var(--accent-500);font-size:1.25rem;">
+                                        <i class="bi bi-person-workspace"></i>
+                                    </span>
+                                    <div>
+                                        <div class="text-secondary" style="font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;">Total Teachers</div>
+                                        <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--ink-900);">{{$teacherCount}}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card rounded-pill">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div class="ms-2 me-auto">
-                                            <div class="fw-bold"><i class="bi bi-diagram-3 me-3"></i> Total Classes</div>
-                                        </div>
-                                        <span class="badge bg-dark rounded-pill">{{ $classCount }}</span>
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body d-flex align-items-center gap-3">
+                                    <span class="d-inline-flex align-items-center justify-content-center rounded-3" style="width:46px;height:46px;background:var(--info-100);color:var(--info-500);font-size:1.25rem;">
+                                        <i class="bi bi-diagram-3"></i>
+                                    </span>
+                                    <div>
+                                        <div class="text-secondary" style="font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;">Total Classes</div>
+                                        <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--ink-900);">{{ $classCount }}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="col">
-                            <div class="card rounded-pill">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div class="ms-2 me-auto">
-                                            <div class="fw-bold">Total Books</div>
-                                        </div>
-                                        <span class="badge bg-dark rounded-pill">800</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                     </div>
                         @if($studentCount > 0)
-                        <div class="mt-3 d-flex align-items-center">
-                            <div class="col-3">
-                                <span class="ps-2 me-2">Students %</span>
-                                <span class="badge rounded-pill border" style="background-color: #0678c8;">Male</span>
-                                <span class="badge rounded-pill border" style="background-color: #49a4fe;">Female</span>
-                            </div>
+                        <div class="card mt-3">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <span class="fw-semibold" style="font-size:.875rem;">Student Gender Split</span>
+                                    <div class="d-flex align-items-center gap-3" style="font-size:.8125rem;">
+                                        <span class="d-flex align-items-center gap-1 text-secondary"><span class="rounded-circle d-inline-block" style="width:8px;height:8px;background:#0678c8;"></span>Male</span>
+                                        <span class="d-flex align-items-center gap-1 text-secondary"><span class="rounded-circle d-inline-block" style="width:8px;height:8px;background:#49a4fe;"></span>Female</span>
+                                    </div>
+                                </div>
                             @php
                             $maleStudentPercentage = round(($maleStudentsBySession/$studentCount), 2) * 100;
                             $maleStudentPercentageStyle = "style='background-color: #0678c8; width: $maleStudentPercentage%'";
@@ -73,52 +71,47 @@
                             $femaleStudentPercentage = round((($studentCount - $maleStudentsBySession)/$studentCount), 2) * 100;
                             $femaleStudentPercentageStyle = "style='background-color: #49a4fe; width: $femaleStudentPercentage%'";
                             @endphp
-                            <div class="col-9 progress">
-                                <div class="progress-bar progress-bar-striped" role="progressbar" {!!$maleStudentPercentageStyle!!} aria-valuenow="{{$maleStudentPercentage}}" aria-valuemin="0" aria-valuemax="100">{{$maleStudentPercentage}}%</div>
-                                <div class="progress-bar progress-bar-striped" role="progressbar" {!!$femaleStudentPercentageStyle!!} aria-valuenow="{{$femaleStudentPercentage}}" aria-valuemin="0" aria-valuemax="100">{{$femaleStudentPercentage}}%</div>
+                                <div class="progress" style="height:10px;border-radius:999px;overflow:hidden;">
+                                    <div class="progress-bar" role="progressbar" {!!$maleStudentPercentageStyle!!} aria-valuenow="{{$maleStudentPercentage}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar" role="progressbar" {!!$femaleStudentPercentageStyle!!} aria-valuenow="{{$femaleStudentPercentage}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1 text-secondary" style="font-size:.75rem;">
+                                    <span>{{$maleStudentPercentage}}% Male</span>
+                                    <span>{{$femaleStudentPercentage}}% Female</span>
+                                </div>
                             </div>
                         </div>
                         @endif
                     @endif
 
-                    <div class="row align-items-md-stretch mt-4">
-                        <div class="col">
-                            <div class="p-3 text-white bg-dark rounded-3">
-                                <h3>Welcome to Sikhi!</h3>
-                                <p><i class="bi bi-emoji-heart-eyes"></i> Thanks for your love and support.</p>
+                    <div class="row g-3 align-items-md-stretch mt-1">
+                        <div class="col-md-6">
+                            <div class="p-4 text-white rounded-4 h-100" style="background:linear-gradient(135deg, var(--brand-500), var(--brand-800));">
+                                <h3 class="text-white mb-2">Welcome to PTMS!</h3>
+                                <p class="mb-0" style="opacity:.9;"><i class="bi bi-emoji-heart-eyes me-1"></i> Thanks for your love and support.</p>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="p-3 bg-white border rounded-3" style="height: 100%;">
-                                <h3>Manage school better</h3>
-                                <p class="text-end">with <i class="bi bi-lightning"></i> <a href="" style="text-decoration: none;">Sikhi</a> <i class="bi bi-lightning"></i>.</p>
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body d-flex flex-column justify-content-center">
+                                    <h3 class="mb-2">Manage school better</h3>
+                                    <p class="text-secondary mb-0"><i class="bi bi-lightning-fill me-1" style="color:var(--brand-500);"></i> with <a href="" style="text-decoration:none;font-weight:600;">PTMS</a> <i class="bi bi-lightning-fill ms-1" style="color:var(--brand-500);"></i></p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-4">
+                    <div class="row g-3 mt-1">
                         <div class="col-lg-6">
-                            <div class="card mb-3">
-                                <div class="card-header bg-transparent"><i class="bi bi-calendar-event me-2"></i> Events</div>
+                            <div class="card h-100">
+                                <div class="card-header bg-transparent"><i class="bi bi-calendar-event me-2" style="color:var(--brand-500);"></i> Events</div>
                                 <div class="card-body text-dark">
                                     @include('components.events.event-calendar', ['editable' => 'false', 'selectable' => 'false'])
-                                    {{-- <div class="overflow-auto" style="height: 250px;">
-                                        <div class="list-group">
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="mb-1">List group item heading</h5>
-                                                <small>3 days ago</small>
-                                                </div>
-                                                <p class="mb-1">Some placeholder content in a paragraph.</p>
-                                                <small>And some small print.</small>
-                                            </a>
-                                        </div>
-                                    </div> --}}
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="card mb-3">
-                                <div class="card-header bg-transparent d-flex justify-content-between"><span><i class="bi bi-megaphone me-2"></i> Notices</span></div>
+                            <div class="card h-100">
+                                <div class="card-header bg-transparent d-flex justify-content-between"><span><i class="bi bi-megaphone me-2" style="color:var(--brand-500);"></i> Notices</span></div>
                                 <div class="card-body p-0 text-dark">
                                     <div>
                                         @isset($notices)
@@ -137,7 +130,10 @@
                                             @endforeach
                                             @endisset
                                             @if(count($notices) < 1)
-                                                <div class="p-3">No notices</div>
+                                                <div class="p-4 text-center text-secondary">
+                                                    <i class="bi bi-megaphone d-block mb-2" style="font-size:1.5rem;"></i>
+                                                    No notices yet
+                                                </div>
                                             @endif
                                         </div>
                                     </div>

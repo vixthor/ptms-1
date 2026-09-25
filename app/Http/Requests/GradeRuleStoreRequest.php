@@ -24,12 +24,13 @@ class GradeRuleStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'point'             => 'required',
-            'grade'             => 'required',
-            'start_at'          => 'required',
-            'end_at'            => 'required',
+            'point' => 'required',
+            'grade' => 'required',
+            'remark' => 'nullable|string',
+            'start_at' => 'required',
+            'end_at' => 'required',
             'grading_system_id' => 'required',
-            'session_id'        => 'required',
+            'session_id' => 'required',
         ];
     }
 }

@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
 
 class FinalMark extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'calculated_marks',
         'final_marks',
@@ -18,7 +18,7 @@ class FinalMark extends Model
         'section_id',
         'course_id',
         'semester_id',
-        'session_id'
+        'session_id',
     ];
 
     /**
@@ -27,5 +27,10 @@ class FinalMark extends Model
     public function student()
     {
         return $this->belongsTo(User::class, 'student_id');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id');
     }
 }

@@ -20,7 +20,7 @@
 
                     @include('session-messages')
 
-                    <div class="mb-4">
+                    <div class="mb-4 form-card">
                         <form class="row g-3" action="{{ route('teacher.update') }}" method="POST">
                             @csrf
                             <input type="hidden" name="teacher_id" value="{{$teacher->id}}">

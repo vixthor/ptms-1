@@ -18,6 +18,7 @@
                                     <th scope="col">System Name</th>
                                     <th scope="col">Points</th>
                                     <th scope="col">Grade</th>
+                                    <th scope="col">Remark</th>
                                     <th scope="col">Starts At</th>
                                     <th scope="col">Ends At</th>
                                     <th scope="col">Actions</th>
@@ -30,6 +31,7 @@
                                         <td>{{$gradeRule->gradingSystem->system_name}}</td>
                                         <td>{{$gradeRule->point}}</td>
                                         <td>{{$gradeRule->grade}}</td>
+                                        <td>{{$gradeRule->remark}}</td>
                                         <td>{{$gradeRule->start_at}}</td>
                                         <td>{{$gradeRule->end_at}}</td>
                                         <td>

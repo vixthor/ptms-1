@@ -8,8 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Notice extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'notice',
-        'session_id'
+        'session_id',
+        'is_public',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_public' => 'boolean',
+        ];
+    }
 }
