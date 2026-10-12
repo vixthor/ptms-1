@@ -1,18 +1,546 @@
 @import url("bootstrap-icons-1.7.1/font/bootstrap-icons.css");
-/* @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lexend:wght@500;600;700&display=swap');
+
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
+:root {
+  /* Brand palette */
+  --brand-50:  #f2f2fd;
+  --brand-100: #e5e5fb;
+  --brand-200: #c7c8f6;
+  --brand-300: #a3a4ef;
+  --brand-400: #7576e4;
+  --brand-500: #4747d7;
+  --brand-600: #3a3ab8;
+  --brand-700: #2d2d91;
+  --brand-800: #0d33e0;
+  --brand-900: #1c1c4a;
+
+  --accent-500: #2fae63;
+  --accent-100: #dff5e7;
+
+  --success-500: #2fae63;
+  --success-100: #dff5e7;
+  --warning-500: #dd9814;
+  --warning-100: #fbf0d9;
+  --danger-500:  #e0374a;
+  --danger-100:  #fbe1e4;
+  --info-500:    #1565c0;
+  --info-100:    #e3edfa;
+
+  /* Neutrals */
+  --ink-900: #1a1a24;
+  --ink-700: #26262c;
+  --ink-500: #5c5c68;
+  --ink-400: #76767f;
+  --ink-300: #9a9aa5;
+  --ink-200: #e2e2ea;
+  --ink-100: #edeef5;
+  --ink-50:  #f6f7fd;
+  --surface: #ffffff;
+  --page-bg: #f5f6fb;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Lexend', var(--font-sans);
+
+  /* Elevation */
+  --shadow-xs: 0 1px 2px rgba(26, 26, 36, 0.05);
+  --shadow-sm: 0 1px 3px rgba(26, 26, 36, 0.06), 0 1px 2px rgba(26, 26, 36, 0.04);
+  --shadow-md: 0 4px 12px rgba(26, 26, 36, 0.07), 0 2px 4px rgba(26, 26, 36, 0.04);
+  --shadow-lg: 0 12px 32px rgba(26, 26, 36, 0.10), 0 4px 8px rgba(26, 26, 36, 0.04);
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-pill: 999px;
+
+  --sidebar-w: 260px;
+  --topbar-h: 68px;
+}
 
 @font-face {
   font-family: 'Ubuntu';
   src: URL('fonts/Ubuntu/Ubuntu-Regular.ttf') format('truetype');
 }
 
-body {
-  background-color: #f8f9fa;
-  font-family: 'Ubuntu', sans-serif;
+/* ==========================================================================
+   Base
+   ========================================================================== */
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
+body {
+  background-color: var(--page-bg);
+  font-family: var(--font-sans);
+  color: var(--ink-700);
+  font-size: 0.9375rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--ink-900);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+a { color: var(--brand-500); }
+a:hover { color: var(--brand-600); }
+
+::selection { background: var(--brand-200); }
+
+/* Scrollbar (webkit) */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--ink-200); border-radius: var(--radius-pill); border: 2px solid var(--page-bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-300); }
+
+/* Focus ring, consistent + accessible */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--brand-400);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Top navigation
+   ========================================================================== */
+#app > .navbar {
+  min-height: var(--topbar-h);
+  background: var(--surface) !important;
+  border-bottom: 1px solid var(--ink-100) !important;
+  box-shadow: 0 1px 0 rgba(26,26,36,0.02);
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+
+.navbar-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--ink-900) !important;
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  letter-spacing: -0.01em;
+}
+
+.navbar-brand i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--brand-500), var(--brand-800));
+  color: #fff;
+  font-size: 1rem;
+}
+
+.navbar .nav-link {
+  color: var(--ink-500);
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.navbar-nav .nav-item .nav-link.disabled {
+  color: var(--ink-400);
+  opacity: 1;
+}
+
+.navbar-nav .badge.bg-light {
+  background: var(--brand-50) !important;
+  color: var(--brand-600) !important;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  padding: .35em .75em;
+}
+
+#navbarDropdown {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .35rem .6rem .35rem .35rem !important;
+  border-radius: var(--radius-pill);
+  transition: background-color .15s ease;
+}
+
+#navbarDropdown:hover { background: var(--ink-50); }
+
+.dropdown-menu {
+  border: 1px solid var(--ink-100);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: .4rem;
+  margin-top: .5rem !important;
+}
+
+.dropdown-item {
+  border-radius: var(--radius-sm);
+  padding: .5rem .7rem;
+  font-size: 0.875rem;
+  color: var(--ink-700);
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background: var(--brand-50);
+  color: var(--brand-700);
+}
+
+/* ==========================================================================
+   Sidebar
+   ========================================================================== */
+.app-sidebar {
+  background: var(--surface);
+  min-height: calc(100vh - var(--topbar-h));
+}
+
+.border-rt-e6 {
+  border-right: 1px solid var(--ink-100) !important;
+}
+
+.app-sidebar .nav-section-label {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-weight: 700;
+  color: var(--ink-300);
+  padding: 1rem 1rem .35rem;
+}
+
+.app-sidebar .nav-link {
+  color: var(--ink-500);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border-radius: var(--radius-sm);
+  padding: .6rem .75rem;
+  margin: .1rem .6rem;
+  display: flex;
+  align-items: center;
+  transition: background-color .15s ease, color .15s ease;
+  border: none !important;
+}
+
+.app-sidebar .nav-link i {
+  font-size: 1.05rem;
+  width: 22px;
+  text-align: center;
+  color: var(--ink-400);
+  transition: color .15s ease;
+}
+
+.app-sidebar .nav-link:hover {
+  background: var(--ink-50);
+  color: var(--ink-900);
+}
+
+.app-sidebar .nav-link:hover i { color: var(--ink-700); }
+
+.app-sidebar .nav-link.active {
+  background: var(--brand-50) !important;
+  background-image: none !important;
+  color: var(--brand-700) !important;
+  font-weight: 600;
+  box-shadow: none !important;
+}
+
+.app-sidebar .nav-link.active i { color: var(--brand-600); }
+
+.app-sidebar .nav-link.disabled {
+  color: var(--ink-300);
+  opacity: 1;
+}
+
+.app-sidebar ul.collapse.show,
+.app-sidebar ul.nav.collapse {
+  border: none !important;
+  background: transparent !important;
+}
+
+.app-sidebar ul.nav.collapse .nav-link {
+  padding-left: 2.5rem;
+  font-size: 0.8125rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.app-sidebar .nav-item.border-bottom {
+  border-bottom: 1px solid var(--ink-100) !important;
+  padding-bottom: .5rem;
+  margin-bottom: .5rem;
+}
+
+/* ==========================================================================
+   Mobile navigation (topbar hamburger + sidebar drawer)
+   ========================================================================== */
+.sidebar-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin-right: .5rem;
+  border: 1px solid var(--ink-100);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink-700);
+  font-size: 1.15rem;
+  order: -1;
+}
+
+.sidebar-toggle:hover { background: var(--ink-50); }
+
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  top: var(--topbar-h);
+  background: rgba(26, 26, 36, .4);
+  z-index: 1040;
+}
+
+.sidebar-backdrop.show { display: block; }
+
+@media (max-width: 991.98px) {
+  .app-sidebar {
+    position: fixed;
+    top: var(--topbar-h);
+    bottom: 0;
+    left: 0;
+    flex: none !important;
+    width: 288px !important;
+    max-width: 85vw !important;
+    background: var(--surface);
+    transform: translateX(-100%);
+    transition: transform .22s ease;
+    z-index: 1045;
+    box-shadow: var(--shadow-lg);
+    overflow-y: auto;
+    padding-top: .5rem;
+  }
+
+  .app-sidebar.mobile-open { transform: translateX(0); }
+
+  /* Show full nav labels inside the drawer regardless of the desktop
+     icon-only breakpoint classes on the label <span>s. */
+  .app-sidebar .d-sm-none.d-md-none,
+  .app-sidebar span.ms-auto.d-inline.d-sm-none.d-md-none.d-xl-inline {
+    display: inline !important;
+  }
+
+  .app-sidebar .nav-link {
+    padding: .7rem .9rem;
+  }
+
+  .sidebar-account {
+    padding: 1rem;
+    border-bottom: 1px solid var(--ink-100);
+    background: var(--ink-50);
+  }
+
+  .sidebar-account-session {
+    font-size: .75rem;
+    color: var(--ink-500);
+    font-weight: 500;
+  }
+}
+
+@media (min-width: 992px) {
+  .sidebar-account { display: none !important; }
+}
+
+@media (min-width: 992px) {
+  .sidebar-toggle { display: none !important; }
+  .sidebar-backdrop { display: none !important; }
+}
+
+/* The sidebar becomes an overlay below 992px, so its flex sibling (the
+   page-content column) should reclaim the full row width instead of the
+   91.6%/83.3% Bootstrap col-* width meant to leave room for it. */
+@media (max-width: 991.98px) {
+  main .row.justify-content-start > [class*="col-"]:not(.app-sidebar) {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+}
+
+/* ==========================================================================
+   Cards
+   ========================================================================== */
+.card {
+  border: 1px solid var(--ink-100);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-header {
+  font-weight: 600;
+  color: var(--ink-900);
+  border-bottom: 1px solid var(--ink-100);
+  padding: 1rem 1.25rem;
+}
+
+.card-body { padding: 1.25rem; }
+
+/* Dashboard stat tiles reuse .card.rounded-pill markup */
+.dashboard .card {
+  border-radius: var(--radius-lg);
+  transition: box-shadow .15s ease, transform .15s ease;
+}
+
+.dashboard .card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.dashboard .card .badge.bg-dark {
+  background: var(--brand-500) !important;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: .5em .85em;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn {
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: .55rem 1.1rem;
+  letter-spacing: -0.005em;
+}
+
+.btn-sm { padding: .35rem .75rem; border-radius: 7px; }
+
+.btn-primary {
+  background: var(--brand-500);
+  border-color: var(--brand-500);
+  box-shadow: var(--shadow-xs);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background: var(--brand-600);
+  border-color: var(--brand-600);
+}
+
+.btn-outline-primary {
+  color: var(--brand-500);
+  border-color: var(--brand-300);
+}
+
+.btn-outline-primary:hover {
+  background: var(--brand-500);
+  border-color: var(--brand-500);
+}
+
+.btn-dark {
+  background: var(--ink-900);
+  border-color: var(--ink-900);
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+.form-control, .form-select {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--ink-200);
+  padding: .55rem .8rem;
+  font-size: 0.9rem;
+  color: var(--ink-900);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--brand-400);
+  box-shadow: 0 0 0 3px var(--brand-100);
+}
+
+.form-label {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--ink-700);
+  margin-bottom: .4rem;
+}
+
+.form-check-input:checked {
+  background-color: var(--brand-500);
+  border-color: var(--brand-500);
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+.table {
+  --bs-table-bg: transparent;
+  color: var(--ink-700);
+}
+
+.table thead th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--ink-400);
+  font-weight: 700;
+  border-bottom: 1px solid var(--ink-100);
+  background: var(--ink-50);
+}
+
+/* Key-value tables (profile pages use <th> as a row label, not a header row) */
+.table tbody th {
+  font-weight: 600;
+  color: var(--ink-500);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  background: transparent;
+}
+
+.table td, .table th {
+  padding: .8rem 1rem;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.table > :not(caption) > * > * {
+  border-bottom-width: 1px;
+  border-bottom-color: var(--ink-100);
+}
+
+.table-hover > tbody > tr:hover > * {
+  background-color: var(--brand-50);
+}
+
+/* ==========================================================================
+   Badges / pills
+   ========================================================================== */
+.badge {
+  font-weight: 600;
+  letter-spacing: 0;
+  border-radius: var(--radius-sm);
+}
+
+.badge.rounded-pill { border-radius: var(--radius-pill); }
+
+/* ==========================================================================
+   Misc / legacy overrides
+   ========================================================================== */
 #watermark {
-  color: #efefef;
+  color: var(--ink-100);
   font-size: 50px;
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
@@ -20,34 +548,13 @@ body {
   position: absolute;
   margin: 0;
   z-index: -1;
-  left:0;
+  left: 0;
   top: 200px;
 }
 
-.nav-item > .nav.collapse {
-  border: 1px solid #1693e3;
-}
-
-/* .dashboard .card {
-  background-color: transparent;
-} */
-
 .bg-dark {
-  background-image: linear-gradient(-45deg,#1054a9,#179ceb);
-}
-
-.nav-link {
-  color: #212529;
-}
-
-.nav-link.active {
-  color: #fff !important;/*#212529;*/
-  border-top: 1px solid #dee2e6;
-  border-left: 1px solid #dee2e6;
-  border-bottom: 1px solid #dee2e6;
-  /*background-color: #ffffff;#f8f9fa;#0d6efd;*/
-  background-image: linear-gradient(-45deg,#1054a9,#179ceb);
-  box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+  background-image: linear-gradient(135deg, var(--brand-500), var(--brand-800)) !important;
+  background-color: var(--brand-600) !important;
 }
 
 .navbar-pad {
@@ -61,34 +568,19 @@ body {
   z-index: 10;
 }
 
-.border-top-e6 {
-  /* border-top: 1px solid #e6e6e6; */
-  border-top: 1px solid #d9d9d9;
-}
+.border-top-e6 { border-top: 1px solid var(--ink-100); }
+.border-btm-e6 { border-bottom: 1px solid var(--ink-100); }
 
-.border-btm-e6 {
-  /* border-bottom: 1px solid #e6e6e6; */
-  border-bottom: 1px solid #d9d9d9;
-}
+.loading-bg-color { background-color: var(--page-bg); }
 
-.border-rt-e6 {
-  /* border-right: 1px solid #e6e6e6; */
-  border-right: 1px solid #d9d9d9;
-}
+.dropdown-toggle.caret-off::after { display: none; }
 
-.loading-bg-color {
-  background-color: #f8f9fa;
-}
-
-.dropdown-toggle.caret-off::after {
-  display: none;
-}
-/*https://mdbootstrap.com/docs/standard/extended/timeline/*/
+/* Timeline (syllabus / history views) */
 .timeline-1 {
-  border-left: 3px solid #b565a7;
-  border-bottom-right-radius: 4px;
-  border-top-right-radius: 4px;
-  background: rgba(177, 99, 163, 0.09);
+  border-left: 3px solid var(--brand-400);
+  border-bottom-right-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+  background: var(--brand-50);
   margin: 0 auto;
   position: relative;
   padding: 50px;
@@ -96,113 +588,303 @@ body {
   text-align: left;
   max-width: 40%;
 }
-  
-@media (max-width: 767px) {
-  .timeline-1 {
-    max-width: 98%;
-    padding: 25px;
-  }
-}
-  
-  .timeline-1 .event {
-    border-bottom: 1px dashed #000;
-    padding-bottom: 25px;
-    margin-bottom: 25px;
-    position: relative;
-  }
-  
-  @media (max-width: 767px) {
-    .timeline-1 .event {
-      padding-top: 30px;
-    }
-  }
-  
-  .timeline-1 .event:last-of-type {
-    padding-bottom: 0;
-    margin-bottom: 0;
-    border: none;
-  }
-  
-  .timeline-1 .event:before,
-  .timeline-1 .event:after {
-    position: absolute;
-    display: block;
-    top: 0;
-  }
-  
-  .timeline-1 .event:before {
-    left: -207px;
-    content: attr(data-date);
-    text-align: right;
-    font-weight: 100;
-    font-size: 0.9em;
-    min-width: 120px;
-  }
-  
-  @media (max-width: 767px) {
-    .timeline-1 .event:before {
-      left: 0px;
-      text-align: left;
-    }
-  }
-  
-  .timeline-1 .event:after {
-    -webkit-box-shadow: 0 0 0 3px #b565a7;
-    box-shadow: 0 0 0 3px #b565a7;
-    left: -55.8px;
-    background: #fff;
-    border-radius: 50%;
-    height: 9px;
-    width: 9px;
-    content: "";
-    top: 5px;
-  }
-  
-  @media (max-width: 767px) {
-    .timeline-1 .event:after {
-      left: -31.8px;
-    }
-  }
 
-/* https://laracasts.com/discuss/channels/laravel/loading-spinner-in-blade?page=1&replyId=611191*/
+@media (max-width: 767px) {
+  .timeline-1 { max-width: 98%; padding: 25px; }
+}
+
+.timeline-1 .event {
+  border-bottom: 1px dashed var(--ink-200);
+  padding-bottom: 25px;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+@media (max-width: 767px) {
+  .timeline-1 .event { padding-top: 30px; }
+}
+
+.timeline-1 .event:last-of-type {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border: none;
+}
+
+.timeline-1 .event:before,
+.timeline-1 .event:after {
+  position: absolute;
+  display: block;
+  top: 0;
+}
+
+.timeline-1 .event:before {
+  left: -207px;
+  content: attr(data-date);
+  text-align: right;
+  font-weight: 500;
+  font-size: 0.85em;
+  color: var(--ink-400);
+  min-width: 120px;
+}
+
+@media (max-width: 767px) {
+  .timeline-1 .event:before { left: 0px; text-align: left; }
+}
+
+.timeline-1 .event:after {
+  box-shadow: 0 0 0 3px var(--brand-500);
+  left: -55.8px;
+  background: #fff;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  content: "";
+  top: 5px;
+}
+
+@media (max-width: 767px) {
+  .timeline-1 .event:after { left: -31.8px; }
+}
+
+/* Loading overlay */
 .loading {
   z-index: 20;
   position: absolute;
   top: 0;
-  left:-5px;
+  left: -5px;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(26, 26, 36, 0.45);
+  backdrop-filter: blur(1px);
 }
+
 .loading-content {
   position: absolute;
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
+  border: 4px solid var(--ink-100);
+  border-top: 4px solid var(--brand-500);
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 42px;
+  height: 42px;
   top: 40%;
-  left:35%;
-  animation: spin 2s linear infinite;
+  left: 35%;
+  animation: spin .8s linear infinite;
 }
-    
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* .table:not(.syllabus-table) th:first-child,
-.table:not(.syllabus-table) td:first-child {
-  position: sticky;
-  left: 0;
-  background-color: #fff;
-  color: #212529;
-} */
+figure.table th, figure.table td { width: 100%; }
 
-.table th, .table td {
-  white-space: nowrap;
+/* Accordion (dashboard notices) */
+.accordion-button:not(.collapsed) {
+  background: var(--brand-50);
+  color: var(--brand-700);
+  box-shadow: inset 0 -1px 0 var(--ink-100);
 }
 
-figure.table th, figure.table td {
-  width: 100%;
+.accordion-button:focus { box-shadow: 0 0 0 3px var(--brand-100); }
+
+/* FullCalendar toolbar tidy-up */
+.fc .fc-button-primary {
+  background: var(--brand-500);
+  border-color: var(--brand-500);
+}
+
+.fc .fc-button-primary:hover {
+  background: var(--brand-600);
+  border-color: var(--brand-600);
+}
+
+/* ==========================================================================
+   Page shell (applies to every inner page: title, breadcrumb, container,
+   list wrappers) — restyles the existing utility-class patterns used across
+   the app's ~40 domain views without needing per-file markup changes.
+   ========================================================================== */
+main > .container {
+  max-width: 100%;
+  padding-left: clamp(1rem, 2vw, 2rem);
+  padding-right: clamp(1rem, 2vw, 2rem);
+}
+
+/* Page titles (Bootstrap .display-6, used as the h1 on every inner page) */
+h1.display-6 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: .35rem !important;
+}
+
+h1.display-6 i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  background: var(--brand-50);
+  color: var(--brand-600);
+  font-size: 1rem;
+}
+
+/* Breadcrumbs */
+.breadcrumb {
+  font-size: .8125rem;
+  margin-bottom: 1.25rem !important;
+}
+
+.breadcrumb-item a {
+  color: var(--ink-400);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.breadcrumb-item a:hover { color: var(--brand-600); }
+
+.breadcrumb-item.active { color: var(--ink-500); }
+
+.breadcrumb-item + .breadcrumb-item::before {
+  color: var(--ink-300);
+}
+
+/* Filter/section labels above forms (e.g. "Filter list by:") */
+main h6 {
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-weight: 700;
+  color: var(--ink-400);
+}
+
+/* List/table content wrapper: `bg-white border shadow-sm p-3` pattern
+   used across list pages — give it the same card treatment as .card. */
+main .bg-white.border.shadow-sm {
+  border: 1px solid var(--ink-100) !important;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm) !important;
+  overflow-x: auto;
+}
+
+/* Action button groups in table rows */
+.btn-group .btn {
+  font-weight: 500;
+}
+
+.btn-group .btn + .btn { margin-left: -1px; }
+
+/* Panels used for create/edit forms (`border rounded`, plain `.card`-less
+   containers around forms) get breathing room + consistent radius. */
+main form {
+  max-width: 100%;
+}
+
+main .card + .card { margin-top: 1rem; }
+
+/* Profile-page info panels (`.p-3.mb-3.border.rounded.bg-white`) */
+main .border.rounded.bg-white {
+  border: 1px solid var(--ink-100) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+}
+
+main .border.rounded.bg-white h6 {
+  color: var(--ink-900);
+  font-size: .8125rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-weight: 700;
+  padding-bottom: .6rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--ink-100);
+}
+
+/* Profile sidebar photo card */
+.card.bg-light {
+  background: var(--surface) !important;
+  border: 1px solid var(--ink-100);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.card.bg-light .card-img-top {
+  border-radius: var(--radius-md);
+}
+
+.card.bg-light .card-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+.list-group-item {
+  border-color: var(--ink-100);
+  font-size: .875rem;
+  padding: .7rem 1rem;
+}
+
+.list-group-item-action:hover {
+  background: var(--brand-50);
+  color: var(--brand-700);
+}
+
+/* Tabs inside card headers */
+.card-header-tabs {
+  margin-bottom: -1rem;
+  border-bottom: none;
+  gap: .25rem;
+}
+
+.card-header-tabs .nav-link {
+  border: none;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  color: var(--ink-500);
+  font-weight: 600;
+  font-size: .8125rem;
+  padding: .55rem .9rem;
+}
+
+.card-header-tabs .nav-link:hover { color: var(--brand-600); }
+
+.card-header-tabs .nav-link.active {
+  background: var(--surface);
+  color: var(--brand-600);
+  box-shadow: inset 0 -2px 0 var(--brand-500);
+}
+
+.card-footer {
+  background: transparent;
+  border-top: 1px solid var(--ink-100);
+  padding: .9rem 1.25rem;
+  font-size: .8125rem;
+  color: var(--ink-500);
+}
+
+/* Settings/masonry panels (`.p-3.border.bg-light[.shadow-sm]`) */
+main .border.bg-light {
+  background: var(--surface) !important;
+  border: 1px solid var(--ink-100) !important;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm) !important;
+  overflow-x: auto;
+}
+
+main .border.bg-light h6 {
+  color: var(--ink-900);
+  font-size: .8125rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-weight: 700;
+}
+
+/* Bare create/edit forms wrapped in `.form-card` */
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--ink-100);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
 }

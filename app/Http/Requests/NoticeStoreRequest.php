@@ -24,8 +24,9 @@ class NoticeStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'notice'    => 'required',
-            'session_id'=> 'required',
+            'notice' => 'required',
+            'session_id' => 'required',
+            'is_public' => 'nullable|boolean',
         ];
     }
 }

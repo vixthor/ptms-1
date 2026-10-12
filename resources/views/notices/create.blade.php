@@ -20,6 +20,12 @@
                             @csrf
                             <input type="hidden" name="session_id" value="{{$current_school_session_id}}">
                             @include('components.ckeditor.editor', ['name' => 'notice'])
+                            <div class="form-check my-3">
+                                <input class="form-check-input" type="checkbox" id="is_public" name="is_public" value="1">
+                                <label class="form-check-label" for="is_public">
+                                    Also show on the public website's News page
+                                </label>
+                            </div>
                             <button type="submit" class="btn btn-outline-primary"><i class="bi bi-check2"></i> Save</button>
                         </form>
                     </div>

@@ -74,14 +74,14 @@
                                                         'section_name' => $course->section->section_name,
                                                         'course_name' => $course->course->course_name
                                                     ])}}" role="button" class="dropdown-item"><i class="bi bi-calendar2-week-fill me-2"></i> View Attendance</a></li>
-                                                    <li><a href="{{route('course.syllabus.index', ['course_id' => $course->course->id])}}" role="button" class="dropdown-item"><i class="bi bi-journal-text me-2"></i> View Syllabus</a></li>
+                                                    <li><a href="{{route('syllabus.list', ['course_id' => $course->course->id])}}" role="button" class="dropdown-item"><i class="bi bi-journal-text me-2"></i> View Syllabus</a></li>
                                                       <li><a href="{{route('assignment.create', [
                                                         'class_id' => $course->schoolClass->id,
                                                         'section_id' => $course->section->id,
                                                         'course_id' => $course->course->id,
                                                         'semester_id' => request()->query('semester_id')
                                                     ])}}" role="button" class="dropdown-item"><i class="bi bi-file-post me-2"></i> Create Assignment</a></li>
-                                                      <li><a href="{{route('assignment.list.show', ['course_id' => $course->course->id])}}" role="button" class="dropdown-item"><i class="bi bi-file-post-fill me-2"></i> View Assignments</a></li>
+                                                      <li><a href="{{route('assignment.list', ['course_id' => $course->course->id])}}" role="button" class="dropdown-item"><i class="bi bi-file-post-fill me-2"></i> View Assignments</a></li>
                                                       <li><a href="{{route('course.mark.create', [
                                                         'class_id' => $course->schoolClass->id,
                                                         'class_name' => $course->schoolClass->class_name,

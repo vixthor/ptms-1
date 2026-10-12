@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Exam;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ExamStoreRequest extends FormRequest
 {
@@ -24,13 +26,13 @@ class ExamStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'exam_name'     => 'required|string',
-            'start_date'    => 'required|date',
-            'end_date'      => 'required|date',
-            'semester_id'   => 'required|integer|gt:0',
-            'class_id'      => 'required|integer|gt:0',
-            'course_id'     => 'required|integer|gt:0',
-            'session_id'    => 'required|integer|gt:0',
+            'exam_name' => ['required', 'string', Rule::in(Exam::CA_EXAM_NAMES)],
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'semester_id' => 'required|integer|gt:0',
+            'class_id' => 'required|integer|gt:0',
+            'course_id' => 'required|integer|gt:0',
+            'session_id' => 'required|integer|gt:0',
         ];
     }
 }

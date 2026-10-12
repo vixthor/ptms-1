@@ -22,7 +22,7 @@
                     <p class="text-primary">
                         <small><i class="bi bi-exclamation-diamond-fill me-2"></i> Remember to create related "Class" and "Section" before adding student</small>
                     </p>
-                    <div class="mb-4">
+                    <div class="mb-4 form-card">
                         <form class="row g-3" action="{{route('student.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row g-3">

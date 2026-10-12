@@ -50,7 +50,12 @@
                                     </div>
                                     <div class="mt-2">
                                         <p>Exam name<sup><i class="bi bi-asterisk text-primary"></i></sup></p>
-                                        <input type="text" class="form-control" name="exam_name" placeholder="Quiz, Assignment, Mid term, Final, ..." aria-label="Quiz, Assignment, Mid term, Final, ...">
+                                        <select class="form-select" name="exam_name">
+                                            <option selected disabled>Please select an exam</option>
+                                            @foreach (\App\Models\Exam::CA_EXAM_NAMES as $examName)
+                                                <option value="{{ $examName }}">{{ $examName }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="mt-2">
                                         <label for="inputStarts" class="form-label">Starts<sup><i class="bi bi-asterisk text-primary"></i></sup></label>

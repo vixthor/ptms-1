@@ -25,6 +25,10 @@
                                         <input type="text" name="grade" class="form-control" id="inputGrade" placeholder="A+, A-, ...">
                                     </div>
                                     <div class="mt-2">
+                                        <label for="inputRemark" class="form-label">Remark</label>
+                                        <input type="text" name="remark" class="form-control" id="inputRemark" placeholder="Distinction, Excellent, ...">
+                                    </div>
+                                    <div class="mt-2">
                                         <label for="inputStarts" class="form-label">Starts<sup><i class="bi bi-asterisk text-primary"></i></sup></label>
                                         <input type="number" step="0.01" name="start_at" class="form-control" id="inputStarts" placeholder="90, 85, ...">
                                     </div>
