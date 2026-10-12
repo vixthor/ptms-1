@@ -16,11 +16,15 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'first_name' => 'Test',
-            'last_name' => 'User',
-            'email' => 'test@example.com',
-        ]);
+        // Factories rely on Faker, a dev-only dependency that isn't
+        // installed in production builds (composer install --no-dev).
+        if (! app()->isProduction()) {
+            User::factory()->create([
+                'first_name' => 'Test',
+                'last_name' => 'User',
+                'email' => 'test@example.com',
+            ]);
+        }
 
         // Many controllers (marks, attendance, academic settings) hard-depend
         // on a single settings row with id=1 existing. Nothing in the app
