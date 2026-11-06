@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademicProgram;
 use App\Models\AdmissionStep;
+use App\Models\ExtracurricularActivity;
 use App\Models\FeeItem;
 use App\Models\GalleryPhoto;
 use App\Models\Notice;
@@ -34,6 +35,7 @@ class PublicSiteController extends Controller
     {
         return view('public.academics', [
             'programs' => AcademicProgram::where('published', true)->orderBy('sort_order')->get(),
+            'activities' => ExtracurricularActivity::forPublicSite()->get(),
         ]);
     }
 

@@ -200,6 +200,7 @@
                         <ul class="nav collapse {{ request()->is('website-admin*')? 'show' : 'hide' }} bg-white" id="website-submenu">
                             <li class="nav-item w-100"><a class="nav-link" href="{{ route('website-admin.pages.index') }}"><i class="bi bi-file-earmark-text me-2"></i> Pages</a></li>
                             <li class="nav-item w-100"><a class="nav-link" href="{{ route('website-admin.academic-programs.index') }}"><i class="bi bi-mortarboard me-2"></i> Academic Programs</a></li>
+                            <li class="nav-item w-100"><a class="nav-link" href="{{ route('website-admin.extracurricular-activities.index') }}"><i class="bi bi-trophy me-2"></i> Activities</a></li>
                             <li class="nav-item w-100"><a class="nav-link" href="{{ route('website-admin.admission-steps.index') }}"><i class="bi bi-list-ol me-2"></i> Admission Steps</a></li>
                             <li class="nav-item w-100"><a class="nav-link" href="{{ route('website-admin.fee-items.index') }}"><i class="bi bi-cash-coin me-2"></i> Fees</a></li>
                             <li class="nav-item w-100"><a class="nav-link" href="{{ route('website-admin.gallery-photos.index') }}"><i class="bi bi-images me-2"></i> Gallery</a></li>

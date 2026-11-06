@@ -4,11 +4,15 @@
 
 @section('content')
 
-<section class="site-section" style="padding-top:3rem;">
-    <div class="site-container" style="max-width:720px;">
-        <a href="{{ route('public.news') }}" style="font-size:.875rem;font-weight:600;"><i class="bi bi-arrow-left"></i> Back to News</a>
-        <div class="mt-3" style="font-size:.8125rem;color:var(--ink-500);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">{{ $notice->created_at->format('d F Y') }}</div>
-        <div class="mt-3" style="font-size:1.0625rem;">
+<x-public.page-hero
+    eyebrow="News"
+    :title="$notice->created_at->format('d F Y')"
+/>
+
+<section class="home-section">
+    <div class="site-container page-narrow">
+        <a href="{{ route('public.news') }}" class="news-back"><i class="bi bi-arrow-left"></i> Back to News</a>
+        <div class="page-panel page-prose">
             {!! \Mews\Purifier\Facades\Purifier::clean($notice->notice) !!}
         </div>
     </div>
