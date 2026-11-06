@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\AcademicProgram;
 use App\Models\AdmissionStep;
+use App\Models\ExtracurricularActivity;
 use App\Models\FeeItem;
 use App\Models\GalleryPhoto;
 use App\Models\Page;
@@ -22,10 +23,10 @@ class WebsiteContentSeeder extends Seeder
     {
         Page::updateOrCreate(['slug' => 'home'], [
             'title' => 'Home',
-            'hero_title' => "Where every child's journey begins with curiosity.",
-            'hero_subtitle' => 'A warm, structured learning environment from Creche through Primary — built around how children actually grow.',
-            'body' => '<p>We believe learning happens best in a place that feels safe, curious, and a little bit fun. Our teachers, classrooms, and curriculum are all designed around that simple idea.</p>',
-            'meta_description' => 'A warm, structured learning environment from Creche through Primary.',
+            'hero_title' => 'Excellence at its peak',
+            'hero_subtitle' => 'A caring Montessori school in Ugborikoko, Delta State, where children learn through hands-on discovery and grow in confidence and character.',
+            'body' => '<p>At Prime Torchbearers Montessori School, every child learns at their own pace, guided by qualified, caring teachers who know them by name.</p>',
+            'meta_description' => 'A caring Montessori school in Ugborikoko, Delta State, from Creche through Primary.',
             'published' => true,
         ]);
 
@@ -48,15 +49,30 @@ class WebsiteContentSeeder extends Seeder
         ]);
 
         $programs = [
-            ['name' => 'Creche', 'description' => 'A safe, nurturing space for our youngest learners to explore, play, and take their first steps toward independence.'],
-            ['name' => 'Nursery', 'description' => 'Hands-on exploration across language, numeracy, and creative play, building the foundations for structured learning.'],
-            ['name' => 'Playgroup', 'description' => 'A gentle introduction to group learning — sharing, listening, and working alongside other children.'],
-            ['name' => 'Primary', 'description' => 'A full academic curriculum across core subjects, paired with clubs, sports, and creative activities.'],
+            ['name' => 'Creche', 'description' => 'A safe, loving space where our youngest learners explore, play and build early social skills.'],
+            ['name' => 'Playgroup', 'description' => 'Play-based learning that builds language, coordination and confidence for the next stage.'],
+            ['name' => 'Nursery', 'description' => 'Learning moves from simple to complex through creative, hands-on learning centres.'],
+            ['name' => 'Primary', 'description' => 'A strong foundation in literacy, numeracy, science and values, ready for secondary school.'],
         ];
         foreach ($programs as $i => $program) {
             AcademicProgram::updateOrCreate(
                 ['slug' => Str::slug($program['name'])],
                 array_merge($program, ['sort_order' => $i, 'published' => true])
+            );
+        }
+
+        $activities = [
+            ['name' => 'Sports', 'description' => 'Football, athletics and inter-house sports that build teamwork, fitness and fair play.'],
+            ['name' => 'Scouts', 'description' => 'Outdoor skills, service projects and badges that grow independence and responsibility.'],
+            ['name' => 'Art', 'description' => 'Drawing, painting and crafts where children explore colour, shape and their own ideas.'],
+            ['name' => 'Theatre', 'description' => 'Drama, role play and end-of-term productions that build confidence on stage.'],
+            ['name' => 'Music', 'description' => 'Singing, rhythm and simple instruments to develop listening and self-expression.'],
+            ['name' => 'Quiz', 'description' => 'Friendly quiz competitions that sharpen general knowledge and quick thinking.'],
+        ];
+        foreach ($activities as $i => $activity) {
+            ExtracurricularActivity::updateOrCreate(
+                ['name' => $activity['name']],
+                array_merge($activity, ['sort_order' => $i, 'published' => true])
             );
         }
 

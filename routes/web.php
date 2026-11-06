@@ -12,6 +12,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExamRuleController;
+use App\Http\Controllers\ExtracurricularActivityController;
 use App\Http\Controllers\FeeItemController;
 use App\Http\Controllers\GalleryPhotoController;
 use App\Http\Controllers\GradeRuleController;
@@ -214,6 +215,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/website-admin/academic-programs/{academicProgram}/edit', [AcademicProgramController::class, 'edit'])->name('website-admin.academic-programs.edit');
     Route::post('/website-admin/academic-programs/{academicProgram}/update', [AcademicProgramController::class, 'update'])->name('website-admin.academic-programs.update');
     Route::post('/website-admin/academic-programs/{academicProgram}/delete', [AcademicProgramController::class, 'destroy'])->name('website-admin.academic-programs.destroy');
+
+    Route::get('/website-admin/extracurricular-activities', [ExtracurricularActivityController::class, 'index'])->name('website-admin.extracurricular-activities.index');
+    Route::get('/website-admin/extracurricular-activities/add', [ExtracurricularActivityController::class, 'create'])->name('website-admin.extracurricular-activities.create');
+    Route::post('/website-admin/extracurricular-activities/store', [ExtracurricularActivityController::class, 'store'])->name('website-admin.extracurricular-activities.store');
+    Route::get('/website-admin/extracurricular-activities/{extracurricularActivity}/edit', [ExtracurricularActivityController::class, 'edit'])->name('website-admin.extracurricular-activities.edit');
+    Route::post('/website-admin/extracurricular-activities/{extracurricularActivity}/update', [ExtracurricularActivityController::class, 'update'])->name('website-admin.extracurricular-activities.update');
+    Route::post('/website-admin/extracurricular-activities/{extracurricularActivity}/delete', [ExtracurricularActivityController::class, 'destroy'])->name('website-admin.extracurricular-activities.destroy');
 
     Route::get('/website-admin/admission-steps', [AdmissionStepController::class, 'index'])->name('website-admin.admission-steps.index');
     Route::post('/website-admin/admission-steps/store', [AdmissionStepController::class, 'store'])->name('website-admin.admission-steps.store');
