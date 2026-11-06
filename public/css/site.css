@@ -248,6 +248,7 @@ html.drawer-locked { overflow: hidden; }
 .contact-fab.is-open .contact-fab-open { display: none; }
 .contact-fab.is-open .contact-fab-close { display: inline; }
 .contact-fab-menu { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: flex-end; gap: .6rem; }
+.contact-fab-menu[hidden] { display: none; }
 .contact-fab-menu:not([hidden]) { animation: contact-fab-in .18s ease-out; }
 .site-body .contact-fab-option {
   display: inline-flex;
