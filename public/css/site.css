@@ -164,8 +164,11 @@ html.drawer-locked { overflow: hidden; }
   padding: 0;
   border: 0;
   background: transparent;
+  /* Stop the dialog scrolling sideways to the off-screen panel when showModal() moves focus into it */
+  overflow: hidden;
+  overflow: clip;
 }
-.site-drawer::backdrop { background: rgba(14, 16, 40, 0); transition: background-color .25s ease; }
+.site-drawer::backdrop { background: rgba(14, 16, 40, 0); transition: background-color .3s ease; }
 .site-drawer.is-open::backdrop { background: rgba(14, 16, 40, .55); }
 .site-drawer-panel {
   position: absolute;
@@ -178,7 +181,8 @@ html.drawer-locked { overflow: hidden; }
   padding: 0 1.5rem 1.5rem;
   overflow-y: auto;
   transform: translateX(100%);
-  transition: transform .25s ease;
+  transition: transform .3s cubic-bezier(.32, .72, 0, 1);
+  will-change: transform;
 }
 .site-drawer.is-open .site-drawer-panel { transform: translateX(0); }
 .site-drawer-head {
@@ -671,6 +675,22 @@ html.drawer-locked { overflow: hidden; }
 .footer-cta-actions { display: flex; flex-direction: column; gap: .7rem; min-width: 300px; }
 .site-footer .footer-cta-actions .btn-site { padding: .9rem 1.4rem; color: #fff; }
 .site-footer .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+.site-footer .footer-social { display: flex; flex-wrap: wrap; gap: .6rem; }
+.site-footer .footer-social li { margin: 0; }
+.site-footer .footer-social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: rgba(255,255,255,.1);
+  color: #fff;
+  font-size: 1.1rem;
+  transition: background .2s ease;
+}
+.site-footer .footer-social a:hover,
+.site-footer .footer-social a:focus-visible { background: var(--accent-600); }
 
 /* ==========================================================================
    Homepage
