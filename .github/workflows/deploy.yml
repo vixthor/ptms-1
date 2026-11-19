@@ -1,0 +1,220 @@
+name: Deploy to EC2
+
+# Builds the app on GitHub's runners, writes .env from the "production"
+# environment's individual secrets and variables, then syncs to EC2.
+#
+# One-time setup (Settings > Environments > production):
+#   Secrets:   EC2_SSH_KEY, APP_KEY, DB_PASSWORD,
+#              MAIL_USERNAME, MAIL_PASSWORD, PAYSTACK_SECRET_KEY,
+#              AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+#   Variables: EC2_HOST, EC2_USER, APP_URL, APP_NAME,
+#              DB_DATABASE, DB_USERNAME,
+#              MAIL_MAILER, MAIL_HOST, MAIL_PORT, MAIL_ENCRYPTION,
+#              MAIL_FROM_ADDRESS, MAIL_FROM_NAME,
+#              PAYSTACK_PUBLIC_KEY, AWS_DEFAULT_REGION, AWS_BUCKET
+# Any variable left unset falls back to the default shown below.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      APP_DIR: /var/www/ptms
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, zip, gd, bcmath, intl, pdo_mysql
+          tools: composer:v2
+          coverage: none
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install PHP dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress --no-scripts
+
+      - name: Build frontend assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: Write production .env
+        env:
+          APP_NAME: ${{ vars.APP_NAME || 'PTMS' }}
+          APP_URL: ${{ vars.APP_URL }}
+          APP_KEY: ${{ secrets.APP_KEY }}
+          DB_DATABASE: ${{ vars.DB_DATABASE || 'ptms' }}
+          DB_USERNAME: ${{ vars.DB_USERNAME || 'ptms' }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MAIL_MAILER: ${{ vars.MAIL_MAILER || 'log' }}
+          MAIL_HOST: ${{ vars.MAIL_HOST || '127.0.0.1' }}
+          MAIL_PORT: ${{ vars.MAIL_PORT || '587' }}
+          MAIL_ENCRYPTION: ${{ vars.MAIL_ENCRYPTION || 'tls' }}
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          MAIL_FROM_ADDRESS: ${{ vars.MAIL_FROM_ADDRESS || 'hello@example.com' }}
+          MAIL_FROM_NAME: ${{ vars.MAIL_FROM_NAME || vars.APP_NAME || 'PTMS' }}
+          PAYSTACK_PUBLIC_KEY: ${{ vars.PAYSTACK_PUBLIC_KEY }}
+          PAYSTACK_SECRET_KEY: ${{ secrets.PAYSTACK_SECRET_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION || 'us-east-1' }}
+          AWS_BUCKET: ${{ vars.AWS_BUCKET }}
+        run: |
+          for required in APP_KEY APP_URL DB_PASSWORD; do
+            if [ -z "${!required}" ]; then
+              echo "::error::${required} is not set in the production environment"
+              exit 1
+            fi
+          done
+
+          # Single-quote values so phpdotenv treats them literally ($, #, spaces);
+          # fall back to escaped double quotes if a value contains a single quote.
+          put() {
+            local key="$1" value="${!1}"
+            if [[ "$value" == *"'"* ]]; then
+              value="${value//\\/\\\\}"
+              value="${value//\"/\\\"}"
+              printf '%s="%s"\n' "$key" "$value"
+            else
+              printf "%s='%s'\n" "$key" "$value"
+            fi
+          }
+
+          {
+            put APP_NAME
+            echo "APP_ENV=production"
+            put APP_KEY
+            echo "APP_DEBUG=false"
+            echo "APP_TIMEZONE=UTC"
+            put APP_URL
+            echo "APP_LOCALE=en"
+            echo "APP_FALLBACK_LOCALE=en"
+            echo "APP_MAINTENANCE_DRIVER=file"
+            echo "BCRYPT_ROUNDS=12"
+            echo
+            echo "LOG_CHANNEL=stack"
+            echo "LOG_STACK=daily"
+            echo "LOG_LEVEL=warning"
+            echo
+            echo "DB_CONNECTION=mysql"
+            echo "DB_HOST=127.0.0.1"
+            echo "DB_PORT=3306"
+            put DB_DATABASE
+            put DB_USERNAME
+            put DB_PASSWORD
+            echo
+            echo "SESSION_DRIVER=database"
+            echo "SESSION_LIFETIME=120"
+            echo "SESSION_ENCRYPT=false"
+            echo "SESSION_PATH=/"
+            echo "SESSION_DOMAIN=null"
+            echo "BROADCAST_CONNECTION=log"
+            echo "FILESYSTEM_DISK=local"
+            echo "QUEUE_CONNECTION=database"
+            echo "CACHE_STORE=database"
+            echo
+            put MAIL_MAILER
+            put MAIL_HOST
+            put MAIL_PORT
+            put MAIL_ENCRYPTION
+            put MAIL_USERNAME
+            put MAIL_PASSWORD
+            put MAIL_FROM_ADDRESS
+            put MAIL_FROM_NAME
+            echo
+            put PAYSTACK_PUBLIC_KEY
+            put PAYSTACK_SECRET_KEY
+            echo "PAYSTACK_PAYMENT_URL=https://api.paystack.co"
+            echo
+            put AWS_ACCESS_KEY_ID
+            put AWS_SECRET_ACCESS_KEY
+            put AWS_DEFAULT_REGION
+            put AWS_BUCKET
+            echo "AWS_USE_PATH_STYLE_ENDPOINT=false"
+          } > .env.production
+
+      - name: Configure SSH
+        env:
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_HOST: ${{ vars.EC2_HOST }}
+        run: |
+          if [ -z "$EC2_SSH_KEY" ] || [ -z "$EC2_HOST" ]; then
+            echo "::error::EC2_SSH_KEY secret and EC2_HOST variable are required"
+            exit 1
+          fi
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$EC2_SSH_KEY" > ~/.ssh/ec2.pem
+          chmod 600 ~/.ssh/ec2.pem
+          ssh-keyscan -T 15 -H "$EC2_HOST" >> ~/.ssh/known_hosts
+
+      - name: Deploy
+        env:
+          TARGET: ${{ vars.EC2_USER || 'ec2-user' }}@${{ vars.EC2_HOST }}
+        run: |
+          SSH="ssh -i $HOME/.ssh/ec2.pem -o BatchMode=yes"
+
+          $SSH "$TARGET" "cd $APP_DIR && php artisan down --retry=15 || true"
+
+          # Protect (P) server-owned paths from --delete; excluded paths are never sent.
+          rsync -rlptz --delete --no-owner --no-group -e "$SSH" \
+            --chmod=Du=rwx,Dg=rwxs,Do=rx,Fu=rw,Fg=rw,Fo=r \
+            --exclude='.git/' --exclude='.github/' --exclude='node_modules/' \
+            --exclude='tests/' --exclude='.env' --exclude='.env.production' \
+            --exclude='public/hot' \
+            --filter='P .env' \
+            --filter='P .git/' \
+            --filter='P storage/**' \
+            --filter='P public/storage' \
+            --filter='P public/upload/**' \
+            --filter='P bootstrap/cache/*.php' \
+            ./ "$TARGET:$APP_DIR/"
+
+          scp -i ~/.ssh/ec2.pem -o BatchMode=yes .env.production "$TARGET:$APP_DIR/.env.new"
+
+          $SSH "$TARGET" bash -s <<REMOTE
+          set -euo pipefail
+          cd "$APP_DIR"
+          trap 'php artisan up' EXIT
+          mv .env.new .env
+          chmod 640 .env
+          WEB_GROUP=\$(stat -c %G storage)
+          chgrp "\$WEB_GROUP" .env
+          php artisan package:discover --ansi
+          [ -L public/storage ] || php artisan storage:link
+          php artisan migrate --force
+          php artisan optimize
+          php artisan queue:restart
+          if systemctl list-unit-files php-fpm.service >/dev/null 2>&1; then
+            sudo systemctl reload php-fpm
+          else
+            sudo systemctl reload php8.3-fpm
+          fi
+          REMOTE
+
+      - name: Smoke test
+        env:
+          APP_URL: ${{ vars.APP_URL }}
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$APP_URL/login")
+          echo "GET $APP_URL/login -> $code"
+          [ "$code" = "200" ]
+
+      - name: Clean up key
+        if: always()
+        run: rm -f ~/.ssh/ec2.pem .env.production
