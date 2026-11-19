@@ -13,8 +13,8 @@ class CbtQuestionController extends Controller
 {
     /**
      * Admin-level/headteacher staff can manage questions on any exam; a
-     * teacher may only manage questions for exams on courses they're
-     * assigned to teach.
+     * teacher may only manage questions for exams in classes they're the
+     * class teacher of.
      */
     protected function authorizeExam(Exam $exam): void
     {
@@ -25,7 +25,7 @@ class CbtQuestionController extends Controller
         }
 
         $isAssigned = AssignedTeacher::where('teacher_id', $user->id)
-            ->where('course_id', $exam->course_id)
+            ->where('class_id', $exam->class_id)
             ->exists();
 
         abort_unless($isAssigned, 403);

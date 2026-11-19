@@ -135,8 +135,6 @@
                                                 <td>{{$student->academic_info?->board_reg_no ?? '—'}}</td>
                                             </tr>
                                             <tr>
-                                                <th scope="row">Section:</th>
-                                                <td colspan="3">{{$promotion_info?->section?->section_name ?? '—'}}</td>
                                             </tr>
                                         </tbody>
                                     </table>

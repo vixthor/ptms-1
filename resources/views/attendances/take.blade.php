@@ -13,28 +13,24 @@
 
                     @include('session-messages')
 
-                    <h3><i class="bi bi-compass"></i>
-                        Class #{{request()->query('class_name')}}, 
-                        @if ($academic_setting->attendance_type == 'course')
-                            Course: {{request()->query('course_name')}}
-                        @else
-                            Section #{{request()->query('section_name')}}
-                        @endif
-                    </h3>
-                    <div class="mt-4">Current Date and Time: {{ date('Y-m-d H:i:s') }}</div>
+                    <h3><i class="bi bi-compass"></i> Class: {{$school_class->class_name}}</h3>
+                    <div class="mt-4">Date: {{ now()->format('l, j F Y') }}</div>
+                    @if ($todays_attendance->isNotEmpty())
+                        <p class="text-success mt-2">
+                            <i class="bi bi-check-circle-fill me-2"></i> Today's attendance was taken at {{ $todays_attendance->min('created_at')->format('g:i a') }}. You can correct it below.
+                        </p>
+                    @else
+                        <p class="text-primary mt-2">
+                            <i class="bi bi-info-circle-fill me-2"></i> Attendance is taken once, at the start of the school day.
+                        </p>
+                    @endif
                     <div class="row mt-4">
                         <div class="col-10 bg-white border p-3 shadow-sm">
                             <form action="{{route('attendances.store')}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="session_id" value="{{$current_school_session_id}}">
-                                <input type="hidden" name="class_id" value="{{request()->query('class_id')}}">
-                                @if ($academic_setting->attendance_type == 'course')
-                                    <input type="hidden" name="course_id" value="{{request()->query('course_id')}}">
-                                    <input type="hidden" name="section_id" value="0">
-                                @else
-                                    <input type="hidden" name="course_id" value="0">
-                                    <input type="hidden" name="section_id" value="{{request()->query('section_id')}}">
-                                @endif
+                                <input type="hidden" name="class_id" value="{{$school_class->id}}">
+                                <input type="hidden" name="section_id" value="{{$school_section->id}}">
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -50,15 +46,15 @@
                                             <th scope="row">{{$student->id_card_number}}</th>
                                             <td>{{$student->student->first_name}} {{$student->student->last_name}}</td>
                                             <td>
-                                                <input class="form-check-input" type="checkbox" name="status[{{$student->student_id}}]" checked>
+                                                <input class="form-check-input" type="checkbox" name="status[{{$student->student_id}}]" {{ optional($todays_attendance->get($student->student_id))->status === 'off' ? '' : 'checked' }}>
                                             </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
-                                @if(count($student_list) > 0 && $attendance_count < 1)
+                                @if(count($student_list) > 0)
                                 <div class="mb-4">
-                                    <button type="submit" class="btn btn-outline-primary"><i class="bi bi-check2"></i> Submit</button>
+                                    <button type="submit" class="btn btn-outline-primary"><i class="bi bi-check2"></i> {{ $todays_attendance->isNotEmpty() ? 'Update Attendance' : 'Submit' }}</button>
                                 </div>
                                 @endif
                             </form>

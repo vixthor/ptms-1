@@ -22,7 +22,7 @@
                                 <tr>
                                     <th scope="col">System Name</th>
                                     <th scope="col">Class</th>
-                                    <th scope="col">Semester</th>
+                                    <th scope="col">Term</th>
                                     <th scope="col">Created At</th>
                                     <th scope="col">Actions</th>
                                 </tr>

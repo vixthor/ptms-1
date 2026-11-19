@@ -24,12 +24,9 @@ class TeacherAssignRequest extends FormRequest
     public function rules()
     {
         return [
-            'course_id'             => 'required|integer',
-            'semester_id'           => 'required|integer',
-            'class_id'              => 'required|integer',
-            'section_id'            => 'required|integer',
-            'teacher_id'            => 'required|integer',
-            'session_id'            => 'required|integer',
+            'class_id' => 'required|integer|exists:school_classes,id',
+            'teacher_id' => 'required|integer|exists:users,id',
+            'session_id' => 'required|integer',
         ];
     }
 }

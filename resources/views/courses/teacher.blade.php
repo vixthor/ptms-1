@@ -8,14 +8,28 @@
             <div class="row pt-2">
                 <div class="col ps-4">
                     <h1 class="display-6 mb-3">
-                        <i class="bi bi-journal-medical"></i> My Courses
+                        <i class="bi bi-journal-medical"></i> My Subjects
                     </h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">My courses</li>
+                            <li class="breadcrumb-item active" aria-current="page">My Subjects</li>
                         </ol>
                     </nav>
+                    @if ($class_assignments->isNotEmpty())
+                    <div class="mb-4">
+                        <h6>My Class</h6>
+                        @foreach ($class_assignments as $assignment)
+                        <div class="p-3 mt-2 bg-white border shadow-sm d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-diagram-3 me-2"></i> {{$assignment->schoolClass->class_name}}</span>
+                            <span>
+                                <a href="{{route('attendance.create.show', ['class_id' => $assignment->class_id])}}" class="btn btn-sm btn-primary"><i class="bi bi-calendar2-week me-1"></i> Take Today's Attendance</a>
+                                <a href="{{route('attendance.list.show', ['class_id' => $assignment->class_id, 'class_name' => $assignment->schoolClass->class_name])}}" class="btn btn-sm btn-outline-primary"><i class="bi bi-calendar2-week-fill me-1"></i> View Today's Attendance</a>
+                            </span>
+                        </div>
+                        @endforeach
+                    </div>
+                    @endif
                     <h6>Filter list by:</h6>
                     <div class="mb-4 mt-4">
                         <form action="{{route('course.teacher.list')}}" method="GET">
@@ -39,9 +53,8 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Course Name</th>
+                                        <th scope="col">Subject Name</th>
                                         <th scope="col">Class</th>
-                                        <th scope="col">Section</th>
                                         <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
@@ -51,29 +64,12 @@
                                         <tr>
                                             <td>{{$course->course->course_name}}</td>
                                             <td>{{$course->schoolClass->class_name}}</td>
-                                            <td>{{$course->section->section_name}}</td>
                                             <td>
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                                       Action
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                      <li><a href="{{route('attendance.create.show', [
-                                                        'class_id' => $course->schoolClass->id,
-                                                        'section_id' => $course->section->id,
-                                                        'course_id' => $course->course->id,
-                                                        'class_name' => $course->schoolClass->class_name,
-                                                        'section_name' => $course->section->section_name,
-                                                        'course_name' => $course->course->course_name
-                                                    ])}}" role="button" class="dropdown-item"><i class="bi bi-calendar2-week me-2"></i> Take Attendance</a></li>
-                                                      <li><a href="{{route('attendance.list.show', [
-                                                        'class_id' => $course->schoolClass->id,
-                                                        'section_id' => $course->section->id,
-                                                        'course_id' => $course->course->id,
-                                                        'class_name' => $course->schoolClass->class_name,
-                                                        'section_name' => $course->section->section_name,
-                                                        'course_name' => $course->course->course_name
-                                                    ])}}" role="button" class="dropdown-item"><i class="bi bi-calendar2-week-fill me-2"></i> View Attendance</a></li>
                                                     <li><a href="{{route('syllabus.list', ['course_id' => $course->course->id])}}" role="button" class="dropdown-item"><i class="bi bi-journal-text me-2"></i> View Syllabus</a></li>
                                                       <li><a href="{{route('assignment.create', [
                                                         'class_id' => $course->schoolClass->id,

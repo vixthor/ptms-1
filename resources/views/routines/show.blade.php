@@ -12,7 +12,7 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
                             <li class="breadcrumb-item"><a href="{{url()->previous()}}">Classes</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Section Routine</li>
+                            <li class="breadcrumb-item active" aria-current="page">Class Routine</li>
                         </ol>
                     </nav>
                     @php

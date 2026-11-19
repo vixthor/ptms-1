@@ -17,7 +17,7 @@
                             <div class="row">
                                 <div class="col">
                                     <select class="form-select" name="semester_id" required>
-                                        <option value="" disabled {{ ! $selectedSemesterId ? 'selected' : '' }}>Please select a semester</option>
+                                        <option value="" disabled {{ ! $selectedSemesterId ? 'selected' : '' }}>Please select a term</option>
                                         @foreach ($semesters as $semester)
                                             <option value="{{ $semester->id }}" {{ (string) $selectedSemesterId === (string) $semester->id ? 'selected' : '' }}>{{ $semester->semester_name }}</option>
                                         @endforeach
@@ -31,14 +31,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col">
-                                    <select class="form-select" id="section-select" name="section_id" required>
-                                        <option value="" disabled {{ ! $selectedSectionId ? 'selected' : '' }}>Please select a section</option>
-                                        @foreach ($sections as $section)
-                                            <option value="{{ $section->id }}" {{ (string) $selectedSectionId === (string) $section->id ? 'selected' : '' }}>{{ $section->section_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                <input type="hidden" id="section-select" name="section_id" value="{{ $selectedSectionId }}">
                                 <div class="col">
                                     <button type="submit" class="btn btn-primary"><i class="bi bi-arrow-counterclockwise"></i> Load List</button>
                                 </div>
@@ -93,7 +86,7 @@
                             </form>
                         @elseif ($selectedSemesterId && $selectedClassId && $selectedSectionId)
                             <div class="bg-white border mt-4 p-3 shadow-sm text-muted">
-                                No students found for that class/section.
+                                No students found for that class.
                             </div>
                         @endif
                     </div>
@@ -112,12 +105,7 @@
         fetch(url)
         .then((resp) => resp.json())
         .then(function(data) {
-            var sectionSelect = document.getElementById('section-select');
-            sectionSelect.options.length = 0;
-            data.sections.unshift({'id': '', 'section_name': 'Please select a section'});
-            data.sections.forEach(function(section, key) {
-                sectionSelect[key] = new Option(section.section_name, section.id);
-            });
+            document.getElementById('section-select').value = data.sections.length ? data.sections[0].id : '';
         })
         .catch(function(error) {
             console.log(error);

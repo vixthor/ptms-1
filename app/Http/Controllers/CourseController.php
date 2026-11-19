@@ -2,28 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Course;
-use Illuminate\Http\Request;
-use App\Traits\SchoolSession;
-use App\Interfaces\CourseInterface;
 use App\Http\Requests\CourseStoreRequest;
+use App\Interfaces\CourseInterface;
 use App\Interfaces\SchoolSessionInterface;
+use App\Models\Course;
 use App\Repositories\PromotionRepository;
+use App\Traits\SchoolSession;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CourseController extends Controller
 {
     use SchoolSession;
+
     protected $schoolCourseRepository;
+
     protected $schoolSessionRepository;
 
     /**
-    * Create a new Controller instance
-    * 
-    * @param CourseInterface $schoolCourseRepository
-    * @return void
-    */
-    public function __construct(SchoolSessionInterface $schoolSessionRepository, CourseInterface $schoolCourseRepository) {
+     * Create a new Controller instance
+     *
+     * @return void
+     */
+    public function __construct(SchoolSessionInterface $schoolSessionRepository, CourseInterface $schoolCourseRepository)
+    {
         $this->schoolSessionRepository = $schoolSessionRepository;
         $this->schoolCourseRepository = $schoolCourseRepository;
     }
@@ -31,7 +33,7 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -41,7 +43,7 @@ class CourseController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -51,15 +53,14 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CourseStoreRequest $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(CourseStoreRequest $request)
     {
         try {
             $this->schoolCourseRepository->create($request->validated());
 
-            return back()->with('status', 'Course creation was successful!');
+            return back()->with('status', 'Subject creation was successful!');
         } catch (\Exception $e) {
             return back()->withError($e->getMessage());
         }
@@ -68,26 +69,27 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function getStudentCourses($student_id) {
+    public function getStudentCourses($student_id)
+    {
         $current_school_session_id = $this->getSchoolCurrentSession();
-        $promotionRepository = new PromotionRepository();
+        $promotionRepository = new PromotionRepository;
         $class_info = $promotionRepository->getPromotionInfoById($current_school_session_id, $student_id);
         $courses = $this->schoolCourseRepository->getByClassId($class_info->class_id);
 
         $data = [
-            'class_info'    => $class_info,
-            'courses'       => $courses,
+            'class_info' => $class_info,
+            'courses' => $courses,
         ];
+
         return view('courses.student', $data);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  $course_id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($course_id)
     {
@@ -97,8 +99,8 @@ class CourseController extends Controller
 
         $data = [
             'current_school_session_id' => $current_school_session_id,
-            'course'                    => $course,
-            'course_id'                 => $course_id,
+            'course' => $course,
+            'course_id' => $course_id,
         ];
 
         return view('courses.edit', $data);
@@ -107,15 +109,14 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request)
     {
         try {
             $this->schoolCourseRepository->update($request);
 
-            return back()->with('status', 'Course update was successful!');
+            return back()->with('status', 'Subject update was successful!');
         } catch (\Exception $e) {
             return back()->withError($e->getMessage());
         }
@@ -124,8 +125,7 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Course  $course
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Course $course)
     {

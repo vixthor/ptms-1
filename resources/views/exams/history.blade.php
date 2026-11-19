@@ -19,7 +19,7 @@
                                         <div class="accordion-item">
                                             <h2 class="accordion-header" id="headingOne">
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                                    Section #1
+                                                    Class #1
                                                 </button>
                                             </h2>
                                             <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
@@ -50,12 +50,12 @@
                                                                         <div class="col text-end">Jan 9th 2021 9:00 AM</div>
                                                                     </div>
                                                                     <div class="row text-muted">
-                                                                        <div class="col">Belongs to: First Semester</div>
+                                                                        <div class="col">Belongs to: First Term</div>
                                                                         <div class="col text-end">Starts: Jan 9th 2021 - Ends: Jan 15th 2021</div>
                                                                     </div>
                                                                 
                                                                 <p class="card-text">
-                                                                    <span class="badge bg-secondary">Course: Math</span>
+                                                                    <span class="badge bg-secondary">Subject: Math</span>
                                                                     <span class="badge bg-dark">Marks: 100</span>
                                                                     <span class="badge bg-primary">Category: Quiz</span>
                                                                 </p>

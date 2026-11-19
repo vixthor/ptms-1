@@ -31,7 +31,7 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <p class="mb-2">Select course:<sup><i class="bi bi-asterisk text-primary"></i></sup></p>
+                                <p class="mb-2">Select subject:<sup><i class="bi bi-asterisk text-primary"></i></sup></p>
                                 <select class="form-select" id="course-select" name="course_id">
                                 </select>
                             </div>
@@ -68,7 +68,7 @@
                     if(response.courses){
                         var sectionsDropdown = $('#course-select');
                         sectionsDropdown.empty(); 
-                        sectionsDropdown.append($('<option>').text('Please select a course').attr('value', 0))
+                        sectionsDropdown.append($('<option>').text('Please select a subject').attr('value', 0))
                         response.courses.forEach(function(section) {
                             sectionsDropdown.append($('<option>').text(section.course_name).attr('value', section.id));
                         });

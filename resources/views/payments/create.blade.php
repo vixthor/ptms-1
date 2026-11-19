@@ -37,7 +37,7 @@
                                         @foreach ($students as $promotion)
                                             <option value="{{$promotion->student->id}}" {{old('student_id') == $promotion->student->id ? 'selected' : ''}}>
                                                 {{$promotion->student->first_name}} {{$promotion->student->last_name}}
-                                                @if($promotion->section) — {{$promotion->section->section_name}} @endif
+                                                @if($promotion->schoolClass) — {{$promotion->schoolClass->class_name}} @endif
                                             </option>
                                         @endforeach
                                     </select>

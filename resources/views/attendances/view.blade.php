@@ -13,14 +13,14 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{url()->previous()}}">Courses</a></li>
+                            <li class="breadcrumb-item"><a href="{{url()->previous()}}">Subjects</a></li>
                             <li class="breadcrumb-item active" aria-current="page">View Attendance</li>
                         </ol>
                     </nav>
                     @if(request()->query('course_name'))
-                        <h3><i class="bi bi-compass"></i> Course: {{request()->query('course_name')}} </h3>
-                    @elseif(request()->query('section_name'))
-                        <h3><i class="bi bi-diagram-2"></i> Section: {{request()->query('section_name')}} </h3>
+                        <h3><i class="bi bi-compass"></i> Subject: {{request()->query('course_name')}} </h3>
+                    @elseif(request()->query('class_name'))
+                        <h3><i class="bi bi-diagram-2"></i> Class: {{request()->query('class_name')}} </h3>
                     @endif
                     <div class="mt-4">Current Date and Time: {{ date('Y-m-d H:i:s') }}</div>
                     <div class="row mt-4">

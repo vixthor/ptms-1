@@ -32,13 +32,9 @@
                                             @endisset
                                         </select>
                                     </div>
+                                    <input type="hidden" id="section-select" name="section_id">
                                     <div>
-                                        <p class="mt-2">Select section:<sup><i class="bi bi-asterisk text-primary"></i></sup></p>
-                                        <select class="form-select" id="section-select" name="section_id" required>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <p class="mt-2">Select course:<sup><i class="bi bi-asterisk text-primary"></i></sup></p>
+                                        <p class="mt-2">Select subject:<sup><i class="bi bi-asterisk text-primary"></i></sup></p>
                                         <select class="form-select" id="course-select" name="course_id" required>
                                         </select>
                                     </div>
@@ -85,17 +81,12 @@
                 dataType: 'json',
                 success: function (response) {
                     if(response.sections){
-                        var sectionsDropdown = $('#section-select');
-                        sectionsDropdown.empty(); 
-                        sectionsDropdown.append($('<option>').text('Please select a section').attr('value', 0))
-                        response.sections.forEach(function(section) {
-                            sectionsDropdown.append($('<option>').text(section.section_name).attr('value', section.id));
-                        });
+                        $('#section-select').val(response.sections.length ? response.sections[0].id : '');
                     }
                     if(response.courses){
                         var sectionsDropdown = $('#course-select');
                         sectionsDropdown.empty(); 
-                        sectionsDropdown.append($('<option>').text('Please select a course').attr('value', 0))
+                        sectionsDropdown.append($('<option>').text('Please select a subject').attr('value', 0))
                         response.courses.forEach(function(section) {
                             sectionsDropdown.append($('<option>').text(section.course_name).attr('value', section.id));
                         });

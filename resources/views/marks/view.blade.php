@@ -10,8 +10,8 @@
                     <h1 class="display-6 mb-3">
                         <i class="bi bi-cloud-sun"></i> View Marks
                     </h1>
-                    <h5><i class="bi bi-diagram-2"></i> Class 1, Section #1 </h5>
-                    <h5><i class="bi bi-compass"></i> Course: Math </h5>
+                    <h5><i class="bi bi-diagram-2"></i> Class 1 </h5>
+                    <h5><i class="bi bi-compass"></i> Subject: Math </h5>
                     <div class="row mt-3">
                         <div class="col">
                             <div class="table-responsive">

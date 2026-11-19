@@ -41,7 +41,7 @@
                                                 
                                             </td>
                                             <td>{{$attendance->created_at}}</td>
-                                            <td>{{($attendance->section == null)?$attendance->course->course_name:$attendance->section->section_name}}</td>
+                                            <td>{{($attendance->section == null)?$attendance->course->course_name:optional($attendance->section->schoolClass)->class_name}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

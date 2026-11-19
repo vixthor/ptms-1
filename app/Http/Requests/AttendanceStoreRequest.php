@@ -24,13 +24,12 @@ class AttendanceStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'course_id'             => 'integer',
-            'class_id'              => 'integer',
-            'section_id'            => 'integer',
-            'student_ids'           => 'required|array|min:1',
-            'student_ids.*'         => 'integer',
-            'status'                => 'required|array|min:1',
-            'session_id'            => 'required',
+            'class_id' => 'required|integer|exists:school_classes,id',
+            'section_id' => 'required|integer',
+            'student_ids' => 'required|array|min:1',
+            'student_ids.*' => 'integer',
+            'status' => 'nullable|array',
+            'session_id' => 'required|integer',
         ];
     }
 }

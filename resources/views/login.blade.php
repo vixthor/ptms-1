@@ -114,9 +114,8 @@
             justify-content: center;
         }
         .auth-form .logo {
-            width: 46px;
-            height: 46px;
-            border-radius: 12px;
+            width: 72px;
+            height: 72px;
             margin-bottom: 1.25rem;
             object-fit: contain;
         }
@@ -268,7 +267,7 @@
                 </div>
             </div>
             <div class="auth-form">
-                <img class="logo" src="{{asset('sikhi/logo.png')}}" alt="PTMS logo">
+                <img class="logo" src="{{asset('sikhi/ptms-crest.png')}}" alt="Prime Torchbearers Montessori School logo">
                 <h2>Sign in</h2>
                 <p class="subtitle">Enter your credentials to access your dashboard.</p>
 

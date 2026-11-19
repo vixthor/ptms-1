@@ -6,8 +6,9 @@
     <title>@yield('title', $siteSettings['site_name'] ?? 'PTMS')</title>
     <meta name="description" content="@yield('meta_description', $siteSettings['tagline'] ?? '')">
 
-    <link rel="shortcut icon" href="{{asset('favicon_io/favicon.ico')}}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('sikhi/logo.png') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('sikhi/ptms-icon.svg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('sikhi/ptms-icon-32.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('sikhi/ptms-icon-180.png') }}">
 
     <link href="{{ asset('css/site.css') }}?v={{ file_exists(public_path('css/site.css')) ? filemtime(public_path('css/site.css')) : 1 }}" rel="stylesheet">
     @stack('styles')
@@ -29,6 +30,7 @@
     <header class="site-header">
         <div class="site-container row-inner">
             <a href="{{ route('public.home') }}" class="site-brand">
+                <img src="{{ asset('sikhi/ptms-crest.png') }}" alt="" width="40" height="40">
                 {{ $siteSettings['site_name'] ?? 'PTMS' }}
             </a>
 
@@ -52,7 +54,7 @@
     <dialog class="site-drawer" id="siteDrawer" aria-label="Site menu">
         <div class="site-drawer-panel">
             <div class="site-drawer-head">
-                <a href="{{ route('public.home') }}" class="site-brand">{{ $siteSettings['site_name'] ?? 'PTMS' }}</a>
+                <a href="{{ route('public.home') }}" class="site-brand"><img src="{{ asset('sikhi/ptms-crest.png') }}" alt="" width="34" height="34"> {{ $siteSettings['site_name'] ?? 'PTMS' }}</a>
                 <button type="button" class="site-drawer-close" data-drawer-close aria-label="Close menu">
                     <i class="bi bi-x-lg" aria-hidden="true"></i>
                 </button>
@@ -88,7 +90,7 @@
             <div class="footer-cta">
                 <div>
                     <a href="{{ route('public.home') }}" class="footer-brand">
-                        <i class="bi bi-box"></i> {{ $siteSettings['site_name'] ?? 'PTMS' }}
+                        <img src="{{ asset('sikhi/ptms-crest.png') }}" alt="" width="44" height="44"> {{ $siteSettings['site_name'] ?? 'PTMS' }}
                     </a>
                     <h2>Give your child a great start</h2>
                 </div>
