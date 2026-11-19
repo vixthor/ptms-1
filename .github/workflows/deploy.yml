@@ -31,7 +31,7 @@ jobs:
       APP_DIR: /var/www/ptms
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: shivammathur/setup-php@v2
         with:
@@ -40,7 +40,7 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm

@@ -123,15 +123,15 @@
                 </div>
                 <div>
                     <h5>Social media</h5>
-                    <ul>
+                    <ul class="footer-social">
                         @if (!empty($siteSettings['facebook_url']))
-                        <li><a href="{{ $siteSettings['facebook_url'] }}" target="_blank" rel="noopener">Facebook</a></li>
+                        <li><a href="{{ $siteSettings['facebook_url'] }}" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><i class="bi bi-facebook" aria-hidden="true"></i></a></li>
                         @endif
                         @if (!empty($siteSettings['instagram_url']))
-                        <li><a href="{{ $siteSettings['instagram_url'] }}" target="_blank" rel="noopener">Instagram</a></li>
+                        <li><a href="{{ $siteSettings['instagram_url'] }}" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><i class="bi bi-instagram" aria-hidden="true"></i></a></li>
                         @endif
                         @if (!empty($siteSettings['whatsapp']))
-                        <li><a href="https://wa.me/{{ preg_replace('/\D/', '', $siteSettings['whatsapp']) }}" target="_blank" rel="noopener">WhatsApp</a></li>
+                        <li><a href="https://wa.me/{{ preg_replace('/\D/', '', $siteSettings['whatsapp']) }}" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><i class="bi bi-whatsapp" aria-hidden="true"></i></a></li>
                         @endif
                     </ul>
                 </div>
@@ -221,7 +221,9 @@
                 drawer.showModal();
                 document.documentElement.classList.add('drawer-locked');
                 toggle.setAttribute('aria-expanded', 'true');
-                requestAnimationFrame(function () { drawer.classList.add('is-open'); });
+                drawer.scrollLeft = 0;
+                void drawer.offsetWidth;
+                drawer.classList.add('is-open');
             }
 
             function closeDrawer() {
@@ -234,7 +236,7 @@
                     drawer.close();
                     document.documentElement.classList.remove('drawer-locked');
                     toggle.focus();
-                }, reduceMotion.matches ? 0 : 250);
+                }, reduceMotion.matches ? 0 : 300);
             }
 
             toggle.addEventListener('click', openDrawer);
