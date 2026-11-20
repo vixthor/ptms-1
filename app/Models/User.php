@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -136,6 +137,37 @@ class User extends Authenticatable
     public function canManageStaff(): bool
     {
         return $this->isAdminLevel();
+    }
+
+    /**
+     * Students and teachers can have their password reset by anyone who
+     * manages them; staff and admin accounts only by ownership level. Users
+     * change their own password via the change-password page instead.
+     */
+    public function canResetPasswordFor(User $target): bool
+    {
+        if ($this->is($target)) {
+            return false;
+        }
+
+        if (in_array($target->role, ['student', 'teacher'], true)) {
+            return $this->canManageStudentsAndTeachers();
+        }
+
+        return $this->canManageStaff();
+    }
+
+    /**
+     * Classes this user is class teacher of in the given session.
+     *
+     * @return Collection<int, int>
+     */
+    public function classTeacherClassIds(int $sessionId): Collection
+    {
+        return AssignedTeacher::where('session_id', $sessionId)
+            ->where('teacher_id', $this->id)
+            ->distinct()
+            ->pluck('class_id');
     }
 
     /**

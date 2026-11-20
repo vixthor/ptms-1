@@ -408,6 +408,63 @@ input:focus-visible {
   transform: translateY(-1px);
 }
 
+.dash-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-md, 12px);
+  font-size: 1.25rem;
+}
+
+.dash-label {
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-weight: 700;
+  color: var(--ink-500);
+}
+
+.dash-value {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  line-height: 1.2;
+}
+
+.dash-meta { font-size: .8125rem; color: var(--ink-500); }
+
+.dash-list { list-style: none; margin: 0; padding: 0; }
+
+.dash-list > li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .65rem 1.25rem;
+  border-top: 1px solid var(--ink-100);
+  font-size: .875rem;
+}
+
+.dash-list > li:first-child { border-top: 0; }
+
+.dash-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--ink-100);
+  overflow: hidden;
+}
+
+.dash-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--brand-500);
+}
+
 .dashboard .card .badge.bg-dark {
   background: var(--brand-500) !important;
   font-family: var(--font-display);

@@ -8,6 +8,7 @@ use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CbtQuestionController;
+use App\Http\Controllers\CommonEntranceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ExamController;
@@ -21,11 +22,14 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MarkController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ParentMessageController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\PublicSiteController;
 use App\Http\Controllers\ReportCardController;
 use App\Http\Controllers\RoutineController;
+use App\Http\Controllers\SchoolCensusController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolSessionController;
 use App\Http\Controllers\SectionController;
@@ -35,6 +39,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StudentPaymentController;
 use App\Http\Controllers\SyllabusController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserPasswordController;
 use Illuminate\Support\Facades\Route;
 
 // Public marketing site — no auth required.
@@ -51,11 +56,18 @@ Route::group(['middlware' => 'guest'], function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'process'])->name('login.process');
 });
+Route::middleware('guest')->group(function () {
+    Route::get('/forgot-password', [PasswordResetController::class, 'create'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetController::class, 'store'])->middleware('throttle:6,1')->name('password.email');
+    Route::get('/reset-password/{token}', [PasswordResetController::class, 'edit'])->name('password.reset');
+    Route::post('/reset-password', [PasswordResetController::class, 'update'])->middleware('throttle:6,1')->name('password.store');
+});
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('dashboard');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/change-password', [AuthController::class, 'updatePasword'])->name('password.edit');
     Route::post('/change-password', [AuthController::class, 'processUpdatePasword'])->name('password.update');
+    Route::post('/users/{user}/password', [UserPasswordController::class, 'update'])->name('users.password.update');
 
     // academic setting
     Route::get('/academics/settings', [AcademicSettingController::class, 'index'])->name('academic.setting');
@@ -180,6 +192,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/my-payments/pay', [StudentPaymentController::class, 'create'])->name('student.payments.create');
     Route::post('/my-payments/initialize', [StudentPaymentController::class, 'initialize'])->name('student.payments.initialize');
     Route::get('/my-payments/callback', [StudentPaymentController::class, 'callback'])->name('student.payments.callback');
+
+    // Parent messaging (SMS / WhatsApp)
+    Route::get('/parent-messages', [ParentMessageController::class, 'create'])->name('parent-messages.create');
+    Route::post('/parent-messages', [ParentMessageController::class, 'store'])->name('parent-messages.store');
+    Route::get('/parent-messages/{parentMessage}', [ParentMessageController::class, 'show'])->name('parent-messages.show');
+
+    // Annual School Census
+    Route::get('/reports/school-census', [SchoolCensusController::class, 'index'])->name('reports.census');
+    Route::get('/reports/school-census/download', [SchoolCensusController::class, 'download'])->name('reports.census.download');
+
+    // Common Entrance
+    Route::get('/common-entrance', [CommonEntranceController::class, 'index'])->name('common-entrance.index');
+    Route::post('/common-entrance', [CommonEntranceController::class, 'update'])->name('common-entrance.update');
 
     // Staff
     Route::get('/staff', [StaffController::class, 'index'])->name('staff.list');

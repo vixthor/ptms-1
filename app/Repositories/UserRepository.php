@@ -18,10 +18,10 @@ class UserRepository implements UserInterface
      * @param  mixed  $request
      * @return string
      */
-    public function createTeacher($request)
+    public function createTeacher($request): User
     {
         try {
-            DB::transaction(function () use ($request) {
+            return DB::transaction(function () use ($request) {
                 $imageUrl = '';
                 if (! empty($request['photo'])) {
                     $photo = $request['photo'];
@@ -63,6 +63,8 @@ class UserRepository implements UserInterface
                     'view events',
                     'view notices',
                 );
+
+                return $user;
             });
         } catch (\Exception $e) {
             throw new \Exception('Failed to create Teacher. '.$e->getMessage());

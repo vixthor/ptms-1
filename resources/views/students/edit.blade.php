@@ -131,6 +131,7 @@
                             </div>
                         </form>
                     </div>
+                    @include('auth.passwords.admin-reset', ['user' => $student])
                 </div>
             </div>
             @include('layouts.footer')

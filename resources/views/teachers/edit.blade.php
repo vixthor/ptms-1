@@ -72,6 +72,7 @@
                             </div>
                         </form>
                     </div>
+                    @include('auth.passwords.admin-reset', ['user' => $teacher])
                 </div>
             </div>
             @include('layouts.footer')

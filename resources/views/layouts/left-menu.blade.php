@@ -158,6 +158,21 @@
                         <a class="nav-link {{ request()->is('notice*')? 'active' : '' }}" href="{{ route('notice.create') }}"><i class="bi bi-megaphone"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">Notice</span></a>
                     </li>
                     @endif
+                    @if (Auth::user()->canManageStudentsAndTeachers() || Auth::user()->role == "teacher")
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('parent-messages*')? 'active' : '' }}" href="{{ route('parent-messages.create') }}"><i class="bi bi-chat-dots"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">Message Parents</span></a>
+                    </li>
+                    @endif
+                    @if (Auth::user()->canManageAcademics() || Auth::user()->role == "teacher")
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('common-entrance*')? 'active' : '' }}" href="{{ route('common-entrance.index') }}"><i class="bi bi-mortarboard"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">Common Entrance</span></a>
+                    </li>
+                    @endif
+                    @if (Auth::user()->canManageStudentsAndTeachers())
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('reports/school-census*')? 'active' : '' }}" href="{{ route('reports.census') }}"><i class="bi bi-clipboard-data"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">School Census</span></a>
+                    </li>
+                    @endif
                     @if (Auth::user()->canManageAcademics())
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('calendar-event*')? 'active' : '' }}" href="{{ route('events.list') }}"><i class="bi bi-calendar-event"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">Event</span></a>
