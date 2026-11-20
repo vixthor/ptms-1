@@ -78,14 +78,14 @@
                     @endif
                     @if(Auth::user()->role == "teacher")
                     <li class="nav-item">
-                        <a class="nav-link {{ (request()->is('courses/teacher*') || request()->is('courses/assignments*'))? 'active' : '' }}" href="{{route('course.teacher.list', ['teacher_id' => Auth::user()->id])}}"><i class="bi bi-journal-medical"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">My Courses</span></a>
+                        <a class="nav-link {{ (request()->is('courses/teacher*') || request()->is('courses/assignments*'))? 'active' : '' }}" href="{{route('course.teacher.list', ['teacher_id' => Auth::user()->id])}}"><i class="bi bi-journal-medical"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">My Subjects</span></a>
                     </li>
                     @endif
                     @if(Auth::user()->role == "student")
                     <li class="nav-item">
                         <a class="nav-link " href="{{route('student.attendance', ['id' => Auth::user()->id])}}"><i class="bi bi-calendar2-week"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">Attendance</span></a>
                     <li class="nav-item">
-                        <a class="nav-link " href="{{route('course.student.list', ['student_id' => Auth::user()->id])}}"><i class="bi bi-journal-medical"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">Courses</span></a>
+                        <a class="nav-link " href="{{route('course.student.list', ['student_id' => Auth::user()->id])}}"><i class="bi bi-journal-medical"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">Subjects</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('my-payments*')? 'active' : '' }}" href="{{route('student.payments.list')}}"><i class="bi bi-currency-exchange"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">My Payments</span></a>
@@ -156,6 +156,21 @@
                     @if (Auth::user()->canManageAcademics() || Auth::user()->canManageClerical())
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('notice*')? 'active' : '' }}" href="{{ route('notice.create') }}"><i class="bi bi-megaphone"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">Notice</span></a>
+                    </li>
+                    @endif
+                    @if (Auth::user()->canManageStudentsAndTeachers() || Auth::user()->role == "teacher")
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('parent-messages*')? 'active' : '' }}" href="{{ route('parent-messages.create') }}"><i class="bi bi-chat-dots"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">Message Parents</span></a>
+                    </li>
+                    @endif
+                    @if (Auth::user()->canManageAcademics() || Auth::user()->role == "teacher")
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('common-entrance*')? 'active' : '' }}" href="{{ route('common-entrance.index') }}"><i class="bi bi-mortarboard"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">Common Entrance</span></a>
+                    </li>
+                    @endif
+                    @if (Auth::user()->canManageStudentsAndTeachers())
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('reports/school-census*')? 'active' : '' }}" href="{{ route('reports.census') }}"><i class="bi bi-clipboard-data"></i> <span class="ms-1 d-inline d-sm-none d-md-none d-xl-inline">School Census</span></a>
                     </li>
                     @endif
                     @if (Auth::user()->canManageAcademics())

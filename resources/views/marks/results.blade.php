@@ -33,10 +33,7 @@
                                         @endisset
                                     </select>
                                 </div>
-                                <div class="col">
-                                    <select class="form-select" id="section-select" name="section_id" required>
-                                    </select>
-                                </div>
+                                <input type="hidden" id="section-select" name="section_id">
                                 <div class="col">
                                     <select class="form-select" id="course-select" name="course_id" required>
                                     </select>
@@ -88,16 +85,11 @@
         fetch(url)
         .then((resp) => resp.json())
         .then(function(data) {
-            var sectionSelect = document.getElementById('section-select');
-            sectionSelect.options.length = 0;
-            data.sections.unshift({'id': 0,'section_name': 'Please select a section'})
-            data.sections.forEach(function(section, key) {
-                sectionSelect[key] = new Option(section.section_name, section.id);
-            });
+            document.getElementById('section-select').value = data.sections.length ? data.sections[0].id : '';
 
             var courseSelect = document.getElementById('course-select');
             courseSelect.options.length = 0;
-            data.courses.unshift({'id': 0,'course_name': 'Please select a course'})
+            data.courses.unshift({'id': 0,'course_name': 'Please select a subject'})
             data.courses.forEach(function(course, key) {
                 courseSelect[key] = new Option(course.course_name, course.id);
             });

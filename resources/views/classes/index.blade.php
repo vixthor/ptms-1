@@ -17,9 +17,6 @@
                     <div class="row">
                         @isset($school_classes)
                             @foreach ($school_classes as $school_class)
-                            @php
-                                $total_sections = 0;
-                            @endphp
                                 <div class="col-12">
                                     <div class="card my-3">
                                         <div class="card-header bg-transparent">
@@ -31,48 +28,23 @@
                                                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#class{{$school_class->id}}-syllabus" role="tab" aria-current="false"><i class="bi bi-journal-text"></i> Syllabus</button>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#class{{$school_class->id}}-courses" role="tab" aria-current="false"><i class="bi bi-journal-medical"></i> Courses</button>
+                                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#class{{$school_class->id}}-courses" role="tab" aria-current="false"><i class="bi bi-journal-medical"></i> Subjects</button>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="card-body text-dark">
                                             <div class="tab-content">
                                                 <div class="tab-pane fade show active" id="class{{$school_class->id}}" role="tabpanel">
-                                                    <div class="accordion" id="accordionClass{{$school_class->id}}">
-                                                        @isset($school_sections)
-                                                            @foreach ($school_sections as $school_section)
-                                                                @if ($school_section->class_id == $school_class->id)
-                                                                    @php
-                                                                        $total_sections++;
-                                                                    @endphp
-                                                                    <div class="accordion-item">
-                                                                        <h2 class="accordion-header" id="headingClass{{$school_class->id}}Section{{$school_section->id}}">
-                                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionClass{{$school_class->id}}Section{{$school_section->id}}" aria-expanded="false" aria-controls="accordionClass{{$school_class->id}}Section{{$school_section->id}}">
-                                                                            {{$school_section->section_name}}
-                                                                        </button>
-                                                                        </h2>
-                                                                        <div id="accordionClass{{$school_class->id}}Section{{$school_section->id}}" class="accordion-collapse collapse" aria-labelledby="headingClass{{$school_class->id}}Section{{$school_section->id}}" data-bs-parent="#accordionClass{{$school_class->id}}">
-                                                                            <div class="accordion-body">
-                                                                                <p class="lead d-flex justify-content-between">
-                                                                                    <span>Room No: {{$school_section->room_no}}</span>
-                                                                                    @can('edit sections')
-                                                                                    <span><a href="{{route('section.edit', ['id' => $school_section->id])}}" role="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i> Edit</a></span>
-                                                                                    @endcan
-                                                                                </p>
-                                                                                <div class="list-group">
-                                                                                    <a href="{{ route('student.list') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                                                                        View Students
-                                                                                    </a>
-                                                                                    <a href="{{ route('routine.list',['class_id' => $school_class->id, 'section_id' => $school_section->id]) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                                                                        View Routine
-                                                                                    </a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                @endif
-                                                            @endforeach
-                                                        @endisset
+                                                    @php
+                                                        $class_section = \App\Models\Section::defaultForClass($school_class);
+                                                    @endphp
+                                                    <div class="list-group">
+                                                        <a href="{{ route('student.list', ['class_id' => $school_class->id, 'section_id' => $class_section->id]) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                                            View Students
+                                                        </a>
+                                                        <a href="{{ route('routine.list',['class_id' => $school_class->id, 'section_id' => $class_section->id]) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                                            View Routine
+                                                        </a>
                                                     </div>
                                                 </div>
                                                 <div class="tab-pane fade" id="class{{$school_class->id}}-syllabus" role="tabpanel">
@@ -104,7 +76,7 @@
                                                         <table class="table">
                                                             <thead>
                                                             <tr>
-                                                                <th scope="col">Course Name</th>
+                                                                <th scope="col">Subject Name</th>
                                                                 <th scope="col">Type</th>
                                                                 <th scope="col">Actions</th>
                                                             </tr>
@@ -128,9 +100,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer bg-transparent d-flex justify-content-between">
-                                            @isset($total_sections)
-                                                <span>Total Sections: {{$total_sections}}</span>
-                                            @endisset
+                                            <span></span>
                                             @can('edit classes')
                                             <span><a href="{{route('class.edit', ['id' => $school_class->id])}}" class="btn btn-sm btn-outline-primary" role="button"><i class="bi bi-pencil"></i> Edit Class</a></span>
                                             @endcan

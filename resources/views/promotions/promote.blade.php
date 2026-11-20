@@ -24,9 +24,7 @@
                                         <th scope="col">First Name</th>
                                         <th scope="col">Last Name</th>
                                         <th scope="col">Previous Class</th>
-                                        <th scope="col">Previous Section</th>
                                         <th scope="col">Promoting to Class</th>
-                                        <th scope="col">Promoting to Section</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -39,7 +37,6 @@
                                             <td>{{$student->student->first_name}}</td>
                                             <td>{{$student->student->last_name}}</td>
                                             <td>{{$schoolClass->class_name}}</td>
-                                            <td>{{$section->section_name}}</td>
                                             <td>
                                                 <select onchange="getSections(this, {{$index}});" class="form-select form-select-sm" id="inputAssignToClass{{$index}}" name="class_id[{{$index}}]" required>
                                                     @isset($school_classes)
@@ -49,10 +46,7 @@
                                                         @endforeach
                                                     @endisset
                                                 </select>
-                                            </td>
-                                            <td>
-                                                <select class="form-select form-select-sm" aria-label="Section" id="inputAssignToSection{{$index}}" name="section_id[{{$index}}]" required>
-                                                </select>
+                                                <input type="hidden" id="inputAssignToSection{{$index}}" name="section_id[{{$index}}]">
                                             </td>
                                         </tr>
                                         @endforeach
@@ -77,12 +71,7 @@
         fetch(url)
         .then((resp) => resp.json())
         .then(function(data) {
-            var sectionSelect = document.getElementById('inputAssignToSection'+index);
-            sectionSelect.options.length = 0;
-            data.sections.unshift({'id': 0,'section_name': 'Please select a section'})
-            data.sections.forEach(function(section, key) {
-                sectionSelect[key] = new Option(section.section_name, section.id);
-            });
+            document.getElementById('inputAssignToSection'+index).value = data.sections.length ? data.sections[0].id : '';
         })
         .catch(function(error) {
             console.log(error);

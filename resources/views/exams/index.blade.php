@@ -48,7 +48,7 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Name</th>
-                                        <th scope="col">Course</th>
+                                        <th scope="col">Subject</th>
                                         <th scope="col">Created at</th>
                                         <th scope="col">Starts</th>
                                         <th scope="col">Ends</th>

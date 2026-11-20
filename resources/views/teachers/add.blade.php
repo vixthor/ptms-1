@@ -34,8 +34,9 @@
                                 <input type="email" class="form-control" id="inputEmail" name="email" required value="{{old('email')}}">
                             </div>
                             <div class="col-md-6">
-                                <label for="inputPassword" class="form-label">Password<sup><i class="bi bi-asterisk text-primary"></i></sup></label>
-                                <input type="password" class="form-control" id="inputPassword" name="password" required>
+                                <label for="inputPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="inputPassword" name="password" minlength="8" autocomplete="new-password">
+                                <div class="form-text">Leave blank to generate one. Login details are emailed to the teacher.</div>
                             </div>
                             <div class="col-md-6">
                                 <label for="formFile" class="form-label">Photo</label>

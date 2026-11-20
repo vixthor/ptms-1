@@ -13,7 +13,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{url()->previous()}}">My courses</a></li>
+                            <li class="breadcrumb-item"><a href="{{url()->previous()}}">My Subjects</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Give Marks</li>
                         </ol>
                     </nav>
@@ -24,15 +24,15 @@
                     </p>
                     @endif
                     <p class="text-primary">
-                        <i class="bi bi-exclamation-diamond-fill me-2"></i> Final Marks submission should be done only once in a Semester when the Marks Submission Window is open.
+                        <i class="bi bi-exclamation-diamond-fill me-2"></i> Final Marks submission should be done only once in a Term when the Marks Submission Window is open.
                     </p>
                     @if ($final_marks_submitted)
                     <p class="text-success">
                         <i class="bi bi-exclamation-diamond-fill me-2"></i> Marks are submitted.
                     </p>
                     @endif
-                    <h3><i class="bi bi-diagram-2"></i> Class #{{request()->query('class_name')}}, Section #{{request()->query('section_name')}}</h3>
-                    <h3><i class="bi bi-compass"></i> Course: {{request()->query('course_name')}}</h3>
+                    <h3><i class="bi bi-diagram-2"></i> Class #{{request()->query('class_name')}}</h3>
+                    <h3><i class="bi bi-compass"></i> Subject: {{request()->query('course_name')}}</h3>
                     @if (!$final_marks_submitted && count($exams) > 0 && $academic_setting['marks_submission_status'] == "on")
                         <div class="col-3 mt-3">
                             <a type="button" href="{{route('course.final.mark.submit.show', ['class_id' => $class_id, 'class_name' => request()->query('class_name'), 'section_id' => $section_id, 'section_name' => request()->query('section_name'), 'course_id' => $course_id, 'course_name' => request()->query('course_name'), 'semester_id' => $semester_id])}}" class="btn btn-outline-primary" onclick="return confirm('Are you sure, you want to submit final marks?')"><i class="bi bi-check2"></i> Submit Final Marks</a>

@@ -20,7 +20,7 @@
                     @include('session-messages')
 
                     <p class="text-primary">
-                        <small><i class="bi bi-exclamation-diamond-fill me-2"></i> Remember to create related "Class" and "Section" before adding student</small>
+                        <small><i class="bi bi-exclamation-diamond-fill me-2"></i> Remember to create the related "Class" before adding a student</small>
                     </p>
                     <div class="mb-4 form-card">
                         <form class="row g-3" action="{{route('student.store')}}" method="POST" enctype="multipart/form-data">
@@ -108,7 +108,7 @@
                                 </div>
                                 <div class="col-5-md">
                                     <label for="inputIdCardNumber" class="form-label">Id Card Number<sup><i class="bi bi-asterisk text-primary"></i></sup></label>
-                                    <input type="text" class="form-control" id="inputIdCardNumber" name="id_card_number" placeholder="e.g. 2021-03-01-02-01 (Year Semester Class Section Roll)" required value="{{old('id_card_number')}}">
+                                    <input type="text" class="form-control" id="inputIdCardNumber" name="id_card_number" placeholder="e.g. 2021-03-01-02-01 (Year Term Class Roll)" required value="{{old('id_card_number')}}">
                                 </div>
                             </div>
                             <div class="row mt-4 g-3">
@@ -147,12 +147,7 @@
                                         @endisset
                                     </select>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="inputAssignToSection" class="form-label">Assign to section:<sup><i class="bi bi-asterisk text-primary"></i></sup></label>
-                                    <select class="form-select" id="inputAssignToSection" name="section_id" required>
-                                        <option selected disabled>Please select a section</option>
-                                    </select>
-                                </div>
+                                <input type="hidden" id="inputAssignToSection" name="section_id" value="{{old('section_id')}}">
                                 <div class="col-md-12">
                                     <label for="inputBoardRegistrationNumber" class="form-label">Board registration No.</label>
                                     <input type="text" class="form-control" id="inputBoardRegistrationNumber" name="board_reg_no" placeholder="Registration No." value="{{old('board_reg_no')}}">
@@ -185,12 +180,7 @@
                 dataType: 'json',
                 success: function (response) {
                     if(response.sections){
-                        var sectionsDropdown = $('#inputAssignToSection');
-                        sectionsDropdown.empty(); 
-                        sectionsDropdown.append($('<option>').text('Please select a section').attr('value', 0))
-                        response.sections.forEach(function(section) {
-                            sectionsDropdown.append($('<option>').text(section.section_name).attr('value', section.id));
-                        });
+                        $('#inputAssignToSection').val(response.sections.length ? response.sections[0].id : '');
                     }
                 }
             })            

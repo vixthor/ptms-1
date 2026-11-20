@@ -31,6 +31,13 @@ return [
         ],
     ],
 
+    'termii' => [
+        'api_key' => env('TERMII_API_KEY'),
+        'sender_id' => env('TERMII_SENDER_ID'),
+        'channel' => env('TERMII_CHANNEL', 'generic'),
+        'base_url' => env('TERMII_BASE_URL', 'https://api.ng.termii.com'),
+    ],
+
     'paystack' => [
         'public_key' => env('PAYSTACK_PUBLIC_KEY'),
         'secret_key' => env('PAYSTACK_SECRET_KEY'),

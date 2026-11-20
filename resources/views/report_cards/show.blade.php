@@ -61,12 +61,12 @@
 <body>
     <div class="toolbar">
         <form method="GET" action="{{ route('report.card.show', ['id' => $student->id]) }}">
-            <label for="semester_id" style="font-size:.8125rem;color:#5c5c68;font-weight:600;">Semester</label>
+            <label for="semester_id" style="font-size:.8125rem;color:#5c5c68;font-weight:600;">Term</label>
             <select name="semester_id" id="semester_id" onchange="this.form.submit()">
                 @forelse ($semesters as $semester)
                     <option value="{{ $semester->id }}" {{ $selectedSemesterId == $semester->id ? 'selected' : '' }}>{{ $semester->semester_name }}</option>
                 @empty
-                    <option value="">No semesters yet</option>
+                    <option value="">No terms yet</option>
                 @endforelse
             </select>
         </form>

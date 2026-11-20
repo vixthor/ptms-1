@@ -2,49 +2,48 @@
 
 namespace App\Repositories;
 
-use App\Models\User;
-use App\Traits\Base64ToFile;
 use App\Interfaces\UserInterface;
 use App\Models\SchoolClass;
 use App\Models\Section;
+use App\Models\User;
+use App\Traits\Base64ToFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Repositories\PromotionRepository;
-use App\Repositories\StudentParentInfoRepository;
-use App\Repositories\StudentAcademicInfoRepository;
 
-class UserRepository implements UserInterface {
+class UserRepository implements UserInterface
+{
     use Base64ToFile;
 
     /**
-     * @param mixed $request
+     * @param  mixed  $request
      * @return string
-    */
-    public function createTeacher($request) {
+     */
+    public function createTeacher($request): User
+    {
         try {
-            DB::transaction(function () use ($request) {
-                $imageUrl="";
-                if(!empty($request["photo"])){
-                    $photo = $request["photo"];
+            return DB::transaction(function () use ($request) {
+                $imageUrl = '';
+                if (! empty($request['photo'])) {
+                    $photo = $request['photo'];
                     $ext = $photo->getClientOriginalExtension();
                     $image = uniqid().'.'.$ext;
                     $imageUrl = 'upload/teacher/'.$image;
                     $photo->move(public_path().'/upload/teacher/', $image);
                 }
                 $user = User::create([
-                    'first_name'    => $request['first_name'],
-                    'last_name'     => $request['last_name'],
-                    'email'         => $request['email'],
-                    'gender'        => $request['gender'],
-                    'nationality'   => $request['nationality'],
-                    'phone'         => $request['phone'],
-                    'address'       => $request['address'],
-                    'address2'      => $request['address2'],
-                    'city'          => $request['city'],
-                    'zip'           => $request['zip'],
-                    'photo'         => (!empty($request['photo'])) ? $imageUrl:null,
-                    'role'          => 'teacher',
-                    'password'      => Hash::make($request['password']),
+                    'first_name' => $request['first_name'],
+                    'last_name' => $request['last_name'],
+                    'email' => $request['email'],
+                    'gender' => $request['gender'],
+                    'nationality' => $request['nationality'],
+                    'phone' => $request['phone'],
+                    'address' => $request['address'],
+                    'address2' => $request['address2'],
+                    'city' => $request['city'],
+                    'zip' => $request['zip'],
+                    'photo' => (! empty($request['photo'])) ? $imageUrl : null,
+                    'role' => 'teacher',
+                    'password' => Hash::make($request['password']),
                 ]);
                 $user->givePermissionTo(
                     'create exams',
@@ -64,6 +63,8 @@ class UserRepository implements UserInterface {
                     'view events',
                     'view notices',
                 );
+
+                return $user;
             });
         } catch (\Exception $e) {
             throw new \Exception('Failed to create Teacher. '.$e->getMessage());
@@ -71,49 +72,50 @@ class UserRepository implements UserInterface {
     }
 
     /**
-     * @param mixed $request
+     * @param  mixed  $request
      * @return string
-    */
-    public function createStudent($request) {
+     */
+    public function createStudent($request)
+    {
         try {
             DB::transaction(function () use ($request) {
-                $imageUrl="";
-                if(!empty($request["photo"])){
-                    $photo = $request["photo"];
+                $imageUrl = '';
+                if (! empty($request['photo'])) {
+                    $photo = $request['photo'];
                     $ext = $photo->getClientOriginalExtension();
                     $image = uniqid().'.'.$ext;
                     $imageUrl = 'upload/student/'.$image;
                     $photo->move(public_path().'/upload/student/', $image);
                 }
                 $student = User::create([
-                    'first_name'    => $request['first_name'],
-                    'last_name'     => $request['last_name'],
-                    'email'         => $request['email'],
-                    'gender'        => $request['gender'],
-                    'nationality'   => $request['nationality'],
-                    'phone'         => $request['phone'],
-                    'address'       => $request['address'],
-                    'address2'      => $request['address2'],
-                    'city'          => $request['city'],
-                    'zip'           => $request['zip'],
-                    'photo'         => (!empty($request['photo'])) ? $imageUrl:null,
-                    'birthday'      => $request['birthday'],
-                    'religion'      => $request['religion'],
-                    'blood_type'    => $request['blood_type'],
-                    'role'          => 'student',
-                    'password'      => Hash::make($request['password']),
+                    'first_name' => $request['first_name'],
+                    'last_name' => $request['last_name'],
+                    'email' => $request['email'],
+                    'gender' => $request['gender'],
+                    'nationality' => $request['nationality'],
+                    'phone' => $request['phone'],
+                    'address' => $request['address'],
+                    'address2' => $request['address2'],
+                    'city' => $request['city'],
+                    'zip' => $request['zip'],
+                    'photo' => (! empty($request['photo'])) ? $imageUrl : null,
+                    'birthday' => $request['birthday'],
+                    'religion' => $request['religion'],
+                    'blood_type' => $request['blood_type'],
+                    'role' => 'student',
+                    'password' => Hash::make($request['password']),
                 ]);
 
                 // Store Parents' information
-                $studentParentInfoRepository = new StudentParentInfoRepository();
+                $studentParentInfoRepository = new StudentParentInfoRepository;
                 $studentParentInfoRepository->store($request, $student->id);
 
                 // Store Academic information
-                $studentAcademicInfoRepository = new StudentAcademicInfoRepository();
+                $studentAcademicInfoRepository = new StudentAcademicInfoRepository;
                 $studentAcademicInfoRepository->store($request, $student->id);
 
                 // Assign student to a Class and a Section
-                $promotionRepository = new PromotionRepository();
+                $promotionRepository = new PromotionRepository;
                 $promotionRepository->assignClassSection($request, $student->id);
 
                 $student->givePermissionTo(
@@ -134,31 +136,32 @@ class UserRepository implements UserInterface {
         }
     }
 
-    public function updateStudent($request) {
+    public function updateStudent($request)
+    {
         try {
             DB::transaction(function () use ($request) {
                 User::where('id', $request['student_id'])->update([
-                    'first_name'    => $request['first_name'],
-                    'last_name'     => $request['last_name'],
-                    'email'         => $request['email'],
-                    'gender'        => $request['gender'],
-                    'nationality'   => $request['nationality'],
-                    'phone'         => $request['phone'],
-                    'address'       => $request['address'],
-                    'address2'      => $request['address2'],
-                    'city'          => $request['city'],
-                    'zip'           => $request['zip'],
-                    'birthday'      => $request['birthday'],
-                    'religion'      => $request['religion'],
-                    'blood_type'    => $request['blood_type'],
+                    'first_name' => $request['first_name'],
+                    'last_name' => $request['last_name'],
+                    'email' => $request['email'],
+                    'gender' => $request['gender'],
+                    'nationality' => $request['nationality'],
+                    'phone' => $request['phone'],
+                    'address' => $request['address'],
+                    'address2' => $request['address2'],
+                    'city' => $request['city'],
+                    'zip' => $request['zip'],
+                    'birthday' => $request['birthday'],
+                    'religion' => $request['religion'],
+                    'blood_type' => $request['blood_type'],
                 ]);
 
                 // Update Parents' information
-                $studentParentInfoRepository = new StudentParentInfoRepository();
+                $studentParentInfoRepository = new StudentParentInfoRepository;
                 $studentParentInfoRepository->update($request, $request['student_id']);
 
                 // Update Student's ID card number
-                $promotionRepository = new PromotionRepository();
+                $promotionRepository = new PromotionRepository;
                 $promotionRepository->update($request, $request['student_id']);
             });
         } catch (\Exception $e) {
@@ -166,20 +169,21 @@ class UserRepository implements UserInterface {
         }
     }
 
-    public function updateTeacher($request) {
+    public function updateTeacher($request)
+    {
         try {
             DB::transaction(function () use ($request) {
                 User::where('id', $request['teacher_id'])->update([
-                    'first_name'    => $request['first_name'],
-                    'last_name'     => $request['last_name'],
-                    'email'         => $request['email'],
-                    'gender'        => $request['gender'],
-                    'nationality'   => $request['nationality'],
-                    'phone'         => $request['phone'],
-                    'address'       => $request['address'],
-                    'address2'      => $request['address2'],
-                    'city'          => $request['city'],
-                    'zip'           => $request['zip'],
+                    'first_name' => $request['first_name'],
+                    'last_name' => $request['last_name'],
+                    'email' => $request['email'],
+                    'gender' => $request['gender'],
+                    'nationality' => $request['nationality'],
+                    'phone' => $request['phone'],
+                    'address' => $request['address'],
+                    'address2' => $request['address2'],
+                    'city' => $request['city'],
+                    'zip' => $request['zip'],
                 ]);
             });
         } catch (\Exception $e) {
@@ -187,38 +191,45 @@ class UserRepository implements UserInterface {
         }
     }
 
-    public function getAllStudents($session_id, $class_id, $section_id) {
-        if($class_id == 0 || $section_id == 0) {
+    public function getAllStudents($session_id, $class_id, $section_id)
+    {
+        if ($class_id == 0 || $section_id == 0) {
             $schoolClass = SchoolClass::where('session_id', $session_id)
-                                    ->first();
+                ->first();
             $section = Section::where('session_id', $session_id)
-                                    ->first();
-            if($schoolClass == null || $section == null){
-                throw new \Exception('There is no class and section');
+                ->first();
+            if ($schoolClass == null || $section == null) {
+                throw new \Exception('There is no class');
             } else {
                 $class_id = $schoolClass->id;
                 $section_id = $section->id;
             }
         }
         try {
-            $promotionRepository = new PromotionRepository();
+            $promotionRepository = new PromotionRepository;
+
             return $promotionRepository->getAll($session_id, $class_id, $section_id);
         } catch (\Exception $e) {
             throw new \Exception('Failed to get all Students. '.$e->getMessage());
         }
     }
 
-    public function getAllStudentsBySession($session_id) {
-        $promotionRepository = new PromotionRepository();
+    public function getAllStudentsBySession($session_id)
+    {
+        $promotionRepository = new PromotionRepository;
+
         return $promotionRepository->getAllStudentsBySession($session_id);
     }
 
-    public function getAllStudentsBySessionCount($session_id) {
-        $promotionRepository = new PromotionRepository();
+    public function getAllStudentsBySessionCount($session_id)
+    {
+        $promotionRepository = new PromotionRepository;
+
         return $promotionRepository->getAllStudentsBySessionCount($session_id);
     }
 
-    public function findStudent($id) {
+    public function findStudent($id)
+    {
         try {
             return User::with('parent_info', 'academic_info')->where('id', $id)->first();
         } catch (\Exception $e) {
@@ -226,7 +237,8 @@ class UserRepository implements UserInterface {
         }
     }
 
-    public function findTeacher($id) {
+    public function findTeacher($id)
+    {
         try {
             return User::where('id', $id)->where('role', 'teacher')->first();
         } catch (\Exception $e) {
@@ -234,7 +246,8 @@ class UserRepository implements UserInterface {
         }
     }
 
-    public function getAllTeachers() {
+    public function getAllTeachers()
+    {
         try {
             return User::where('role', 'teacher')->get();
         } catch (\Exception $e) {
@@ -242,10 +255,11 @@ class UserRepository implements UserInterface {
         }
     }
 
-    public function changePassword($new_password) {
+    public function changePassword($new_password)
+    {
         try {
             return User::where('id', auth()->user()->id)->update([
-                'password'  => Hash::make($new_password)
+                'password' => Hash::make($new_password),
             ]);
         } catch (\Exception $e) {
             throw new \Exception('Failed to change password. '.$e->getMessage());

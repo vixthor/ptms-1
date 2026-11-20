@@ -9,12 +9,9 @@
 
     <title>PTMS &middot; Prime Torch Bearers Montessori School</title>
 
-    <link rel="shortcut icon" href="{{asset('favicon_io/favicon.ico')}}">
-    <link rel="shortcut icon" sizes="16x16" href="{{asset('favicon_io/favicon-16x16.png')}}">
-    <link rel="shortcut icon" sizes="32x32" href="{{asset('favicon_io/favicon-32x32.png')}}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('sikhi/logo.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('sikhi/logo.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('sikhi/logo.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('sikhi/ptms-icon-180.png') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('sikhi/ptms-icon.svg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('sikhi/ptms-icon-32.png') }}">
 
     <!-- Scripts -->
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
@@ -37,7 +34,7 @@
                 </button>
                 @endauth
                 <a class="navbar-brand" href="{{ route('dashboard') }}">
-                    <i class="bi bi-mortarboard-fill"></i> PTMS
+                    <img src="{{ asset('sikhi/ptms-crest.png') }}" alt="" width="30" height="30" style="vertical-align:middle;margin-top:-3px;"> PTMS
                 </a>
 
                 <div class="d-none d-lg-flex align-items-center flex-grow-1" id="navbarTopContent">

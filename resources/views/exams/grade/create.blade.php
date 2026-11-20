@@ -26,7 +26,7 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <p class="mt-2">Select semester:<sup><i class="bi bi-asterisk text-primary"></i></sup></p>
+                                        <p class="mt-2">Select term:<sup><i class="bi bi-asterisk text-primary"></i></sup></p>
                                         <select class="form-select" aria-label=".form-select-sm" name="semester_id" required>
                                             @isset($semesters)
                                                 @foreach ($semesters as $semester)

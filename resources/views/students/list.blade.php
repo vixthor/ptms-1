@@ -30,21 +30,11 @@
                                     @endisset
                                 </select>
                             </div>
-                            <div class="col">
-                                <select class="form-select" id="section-select" aria-label="Section" name="section_id" required>
-                                    <option value="{{request()->query('section_id')}}">{{request()->query('section_name')}}</option>
-                                </select>
-                            </div>
+                            <input type="hidden" id="section-select" name="section_id" value="{{request()->query('section_id')}}">
                             <div class="col">
                                 <button type="submit" class="btn btn-primary"><i class="bi bi-arrow-counterclockwise"></i> Load List</button>
                             </div>
                         </form>
-                        @foreach ($studentList as $student)
-                            @if ($loop->first)
-                                <p class="mt-3"><b>Section:</b> {{$student->section->section_name}}</p>
-                                @break
-                            @endif
-                        @endforeach
                         <div class="bg-white border shadow-sm p-3 mt-4">
                             <table class="table table-responsive">
                                 <thead>
@@ -104,12 +94,7 @@
         fetch(url)
         .then((resp) => resp.json())
         .then(function(data) {
-            var sectionSelect = document.getElementById('section-select');
-            sectionSelect.options.length = 0;
-            data.sections.unshift({'id': 0,'section_name': 'Please select a section'})
-            data.sections.forEach(function(section, key) {
-                sectionSelect[key] = new Option(section.section_name, section.id);
-            });
+            document.getElementById('section-select').value = data.sections.length ? data.sections[0].id : '';
         })
         .catch(function(error) {
             console.log(error);

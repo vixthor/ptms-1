@@ -8,16 +8,16 @@
             <div class="row pt-2">
                 <div class="col ps-4">
                     <h1 class="display-6 mb-3">
-                        <i class="bi bi-cloud-sun"></i> Course Marks
+                        <i class="bi bi-cloud-sun"></i> Subject Marks
                     </h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{url()->previous()}}">My Courses</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Course Marks</li>
+                            <li class="breadcrumb-item"><a href="{{url()->previous()}}">My Subjects</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Subject Marks</li>
                         </ol>
                     </nav>
-                    <h5>Course: {{$course_name}}</h5>
+                    <h5>Subject: {{$course_name}}</h5>
                     <div class="mb-4 mt-4 p-3 bg-white border shadow-sm">
                         <table class="table">
                             <thead>

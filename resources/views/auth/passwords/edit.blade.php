@@ -19,16 +19,16 @@
                         <form action="{{route('password.update')}}" method="POST">
                             @csrf
                             <div class="mb-3">
-                                <label for="old-password" class="form-label">Old Password</label>
-                                <input class="form-control" id="old-password" name="old_password" type="password" placeholder="Old password">
+                                <label for="old-password" class="form-label">Current Password</label>
+                                <input class="form-control" id="old-password" name="old_password" type="password" placeholder="Current password" autocomplete="current-password" required>
                             </div>
                             <div class="mb-3">
                                 <label for="new-password" class="form-label">New Password</label>
-                                <input class="form-control" id="new-password" name="new_password" type="password" placeholder="New password">
+                                <input class="form-control" id="new-password" name="new_password" type="password" placeholder="New password (min. 8 characters)" minlength="8" autocomplete="new-password" required>
                             </div>
                             <div class="mb-3">
-                                <label for="new-password" class="form-label">Confirm new Password</label>
-                                <input class="form-control" id="new-password" name="new_password_confirmation" type="password" placeholder="Confirm new password">
+                                <label for="new-password-confirmation" class="form-label">Confirm new Password</label>
+                                <input class="form-control" id="new-password-confirmation" name="new_password_confirmation" type="password" placeholder="Confirm new password" minlength="8" autocomplete="new-password" required>
                             </div>
                             <button type="submit" class="btn btn-outline-primary"><i class="bi bi-check2"></i> Save</button>
                         </form>

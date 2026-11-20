@@ -14,7 +14,6 @@
         return 'file://'.str_replace('\\', '/', public_path($path));
     };
     $schoolClass = optional(optional($promotion)->section)->schoolClass;
-    $section = optional($promotion)->section;
     $selectedSemester = $semesters->firstWhere('id', $selectedSemesterId);
     $behaviouralItems = ['Attendance', 'Skills', 'Punctuality', 'Neatness', 'Politeness', 'Self Control', 'Relationship'];
     $ratings = $reportCard->behavioural_ratings ?? [];
@@ -23,7 +22,7 @@
 <table class="rc-table rc-w-full" cellpadding="4" cellspacing="0">
     <tr>
         <td class="rc-header-cell" style="text-align:center;">
-            <img src="{{ $imgSrc('sikhi/logo.png') }}" style="height:60px;">
+            <img src="{{ $imgSrc('sikhi/ptms-crest.png') }}" style="height:60px;">
         </td>
     </tr>
 </table>
@@ -39,7 +38,7 @@
         </td>
         <td class="rc-cell">
             <div><span class="rc-label">Name:</span> <span class="rc-value">{{ strtoupper($student->last_name) }}, {{ $student->first_name }}</span></div>
-            <div><span class="rc-label">Class:</span> <span class="rc-value">{{ $schoolClass->class_name ?? '—' }}@if($section), {{ $section->section_name }}@endif</span></div>
+            <div><span class="rc-label">Class:</span> <span class="rc-value">{{ $schoolClass->class_name ?? '—' }}</span></div>
             <div><span class="rc-label">Term:</span> <span class="rc-value">{{ $selectedSemester->semester_name ?? '—' }}</span>
                 &nbsp; <span class="rc-label">Session:</span> <span class="rc-value">{{ optional(\App\Models\SchoolSession::find($promotion->session_id ?? null))->session_name ?? '—' }}</span></div>
             <div>

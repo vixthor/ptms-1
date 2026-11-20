@@ -2,28 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Traits\SchoolSession;
-use App\Interfaces\UserInterface;
+use App\Http\Requests\AttendanceTypeUpdateRequest;
+use App\Interfaces\AcademicSettingInterface;
 use App\Interfaces\CourseInterface;
-use App\Interfaces\SectionInterface;
-use App\Interfaces\SemesterInterface;
 use App\Interfaces\SchoolClassInterface;
 use App\Interfaces\SchoolSessionInterface;
-use App\Interfaces\AcademicSettingInterface;
-use App\Http\Requests\AttendanceTypeUpdateRequest;
+use App\Interfaces\SectionInterface;
+use App\Interfaces\SemesterInterface;
+use App\Interfaces\UserInterface;
+use App\Repositories\AssignedTeacherRepository;
+use App\Traits\SchoolSession;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class AcademicSettingController extends Controller
 {
     use SchoolSession;
+
     protected $academicSettingRepository;
+
     protected $schoolSessionRepository;
+
     protected $schoolClassRepository;
+
     protected $schoolSectionRepository;
+
     protected $userRepository;
+
     protected $courseRepository;
+
     protected $semesterRepository;
+
+    protected $assignedTeacherRepository;
 
     public function __construct(
         AcademicSettingInterface $academicSettingRepository,
@@ -32,7 +42,8 @@ class AcademicSettingController extends Controller
         SectionInterface $schoolSectionRepository,
         UserInterface $userRepository,
         CourseInterface $courseRepository,
-        SemesterInterface $semesterRepository
+        SemesterInterface $semesterRepository,
+        AssignedTeacherRepository $assignedTeacherRepository
     ) {
         // $this->middleware(['can:view academic settings']);
 
@@ -43,16 +54,19 @@ class AcademicSettingController extends Controller
         $this->userRepository = $userRepository;
         $this->courseRepository = $courseRepository;
         $this->semesterRepository = $semesterRepository;
+        $this->assignedTeacherRepository = $assignedTeacherRepository;
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function create(){
+    public function create()
+    {
         return view('teachers.add');
     }
+
     public function index()
     {
         $current_school_session_id = $this->getSchoolCurrentSession();
@@ -63,7 +77,7 @@ class AcademicSettingController extends Controller
 
         $school_sessions = $this->schoolSessionRepository->getAll();
 
-        $school_classes = $this->schoolClassRepository->getAllBySession($current_school_session_id);
+        $school_classes = $this->schoolClassRepository->getAllWithCoursesBySession($current_school_session_id);
 
         $school_sections = $this->schoolSectionRepository->getAllBySession($current_school_session_id);
 
@@ -73,26 +87,30 @@ class AcademicSettingController extends Controller
 
         $semesters = $this->semesterRepository->getAll($current_school_session_id);
 
+        $class_teachers = $this->assignedTeacherRepository->getClassTeachersBySession($current_school_session_id);
+
         $data = [
             'current_school_session_id' => $current_school_session_id,
-            'latest_school_session_id'  => $latest_school_session->id,
-            'academic_setting'          => $academic_setting,
-            'school_sessions'           => $school_sessions,
-            'school_classes'            => $school_classes,
-            'school_sections'           => $school_sections,
-            'teachers'                  => $teachers,
-            'courses'                   => $courses,
-            'semesters'                 => $semesters,
+            'latest_school_session_id' => $latest_school_session->id,
+            'academic_setting' => $academic_setting,
+            'school_sessions' => $school_sessions,
+            'school_classes' => $school_classes,
+            'school_sections' => $school_sections,
+            'teachers' => $teachers,
+            'courses' => $courses,
+            'semesters' => $semesters,
+            'class_teachers' => $class_teachers,
+            'browse_session_name' => session('browse_session_name'),
         ];
-// dd($data);
+
+        // dd($data);
         return view('academics.settings', $data);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  AttendanceTypeUpdateRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function updateAttendanceType(AttendanceTypeUpdateRequest $request)
     {
@@ -105,7 +123,8 @@ class AcademicSettingController extends Controller
         }
     }
 
-    public function updateFinalMarksSubmissionStatus(Request $request) {
+    public function updateFinalMarksSubmissionStatus(Request $request)
+    {
         try {
             $this->academicSettingRepository->updateFinalMarksSubmissionStatus($request);
 

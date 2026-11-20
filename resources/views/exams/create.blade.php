@@ -22,10 +22,10 @@
                                     @csrf
                                     <input type="hidden" name="session_id" value="{{$current_school_session_id}}">
                                     <div>
-                                        <p>Select Semester:<sup><i class="bi bi-asterisk text-primary"></i></sup></p>
+                                        <p>Select Term:<sup><i class="bi bi-asterisk text-primary"></i></sup></p>
                                         <select class="form-select" name="semester_id">
                                             @isset($semesters)
-                                            <option selected disabled>Please select a Semester</option>
+                                            <option selected disabled>Please select a Term</option>
                                                 @foreach ($semesters as $semester)
                                                 <option value="{{$semester->id}}">{{$semester->semester_name}}</option>
                                                 @endforeach
@@ -44,7 +44,7 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <p class="mt-2" >Select course:<sup><i class="bi bi-asterisk text-primary"></i></sup></p>
+                                        <p class="mt-2" >Select subject:<sup><i class="bi bi-asterisk text-primary"></i></sup></p>
                                         <select class="form-select" id="course-select" name="course_id">
                                         </select>
                                     </div>
@@ -91,7 +91,7 @@
                     if(response.courses){
                         var sectionsDropdown = $('#course-select');
                         sectionsDropdown.empty(); 
-                        sectionsDropdown.append($('<option>').text('Please select a course').attr('value', 0))
+                        sectionsDropdown.append($('<option>').text('Please select a subject').attr('value', 0))
                         response.courses.forEach(function(course) {
                             sectionsDropdown.append($('<option>').text(course.course_name).attr('value', course.id));
                         });
